@@ -12,16 +12,17 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-@Data
+
 @Entity
 @Table(name="users")
 public class User {
 	
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY
+)
 
-	private Long Id;
+	private Long id;
 	
 	@Column(nullable = false)
 	private String name;
@@ -47,6 +48,7 @@ public class User {
 
 public User(Long id, String name, String email, String password, Role role) {
 	
+	this.id=id;
 	this.name = name;
 	this.email = email;
 	this.password = password;
@@ -54,11 +56,11 @@ public User(Long id, String name, String email, String password, Role role) {
 }
 
 public Long getId() {
-	return Id;
+	return id;
 }
 
 public void setId(Long id) {
-	Id = id;
+	id = id;
 }
 
 public String getName() {
