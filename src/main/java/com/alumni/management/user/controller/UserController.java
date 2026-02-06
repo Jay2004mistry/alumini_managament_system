@@ -16,24 +16,21 @@ import com.alumni.management.user.dto.UserResponseDto;
 import com.alumni.management.user.entity.User;
 import com.alumni.management.user.service.UserService;
 
-
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-	
+
 	@Autowired
 	UserService userService;
-	
+
 	@PostMapping
 	public User createUser(@RequestBody User user) {
-		
-		
+
 //		Send the user data to the service layer and then 
 //		service layer will save that data by checking condition
 		return userService.createUser(user);
-		}
-	
-	
+	}
+
 	@GetMapping()
 	public List<UserResponseDto> getAllUsers(@RequestBody User user) {
 		return userService.getAllUsers();
@@ -43,17 +40,17 @@ public class UserController {
 	public UserResponseDto getUserById(@PathVariable Long id) {
 		return userService.getUserById(id);
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public String deleteUser(@PathVariable Long id) {
 		userService.deleteUser(id);
 		return "Delete Successfully";
 	}
-	
+
 	@PutMapping("/{id}")
 	public User updateUserData(@PathVariable Long id, @RequestBody User user) {
-			return userService.updateUserData(id,user);
-		
+		return userService.updateUserData(id, user);
+
 	}
-	
+
 }

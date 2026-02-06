@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.alumni.management.user.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    
+
 //	We take email for unique authentication in login we
 //	normally use email and password that why	 
 	Optional<User> findByEmail(String email);

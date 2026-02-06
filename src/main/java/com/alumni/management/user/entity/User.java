@@ -12,31 +12,27 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
-	
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY
-)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 
 	private Long id;
-	
+
 	@Column(nullable = false)
 	private String name;
-	
-	@Column(nullable = false ,unique = true)
+
+	@Column(nullable = false, unique = true)
 	private String email;
-	
+
 	@Column(nullable = false)
-    private String password;
-	
-	
+	private String password;
+
 //	manyToOne is like forign key
 	@ManyToOne
-	
+
 //	Create a column called role_id in the users table 
 //	and use it as a foreign key that points to roles.id
 	@JoinColumn(name = "role_id", nullable = false)
@@ -46,53 +42,53 @@ public class User {
 	public User() {
 	}
 
-public User(Long id, String name, String email, String password, Role role) {
-	
-	this.id=id;
-	this.name = name;
-	this.email = email;
-	this.password = password;
-	this.role = role;
-}
+	public User(Long id, String name, String email, String password, Role role) {
 
-public Long getId() {
-	return id;
-}
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.role = role;
+	}
 
-public void setId(Long id) {
-	id = id;
-}
+	public Long getId() {
+		return id;
+	}
 
-public String getName() {
-	return name;
-}
+	public void setId(Long id) {
+		id = id;
+	}
 
-public void setName(String name) {
-	this.name = name;
-}
+	public String getName() {
+		return name;
+	}
 
-public String getEmail() {
-	return email;
-}
+	public void setName(String name) {
+		this.name = name;
+	}
 
-public void setEmail(String email) {
-	this.email = email;
-}
+	public String getEmail() {
+		return email;
+	}
 
-public String getPassword() {
-	return password;
-}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-public void setPassword(String password) {
-	this.password = password;
-}
+	public String getPassword() {
+		return password;
+	}
 
-public Role getRole() {
-	return role;
-}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-public void setRole(Role role) {
-	this.role = role;
-}
-	
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 }

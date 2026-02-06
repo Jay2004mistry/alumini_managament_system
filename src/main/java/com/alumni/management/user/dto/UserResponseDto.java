@@ -4,40 +4,35 @@
 //DTOs cannot talk to the database.
 package com.alumni.management.user.dto;
 
-
-
 public class UserResponseDto {
 
-	 private Long id;
-	 private String name;
-	 private String email;
-	 private String roleName;
-	 
-	 public UserResponseDto(Long id, String name, String email, String roleName) {
+	private Long id;
+	private String name;
+	private String email;
+	private String roleName;
+
+	public UserResponseDto(Long id, String name, String email, String roleName) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.roleName = roleName;
-	 }
+	}
 
-	 public Long getId() {
-		 return id;
-	 }
+	public Long getId() {
+		return id;
+	}
 
-	 public String getName() {
-		 return name;
-	 }
+	public String getName() {
+		return name;
+	}
 
-	 public String getEmail() {
-		 return email;
-	 }
+	public String getEmail() {
+		return email;
+	}
 
-	 public String getRoleName() {
-		 return roleName;
-	 }
-	 
-	 
-	 
-	 
+	public String getRoleName() {
+		return roleName;
+	}
+
 }
