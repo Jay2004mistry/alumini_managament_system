@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alumni.management.user.dto.UserResponseDto;
 import com.alumni.management.user.entity.User;
 import com.alumni.management.user.service.UserService;
 
@@ -34,12 +35,12 @@ public class UserController {
 	
 	
 	@GetMapping()
-	public List<User> getAllUsers(@RequestBody User user) {
+	public List<UserResponseDto> getAllUsers(@RequestBody User user) {
 		return userService.getAllUsers();
 	}
 
 	@GetMapping("/{id}")
-	public User getUserById(@PathVariable Long id) {
+	public UserResponseDto getUserById(@PathVariable Long id) {
 		return userService.getUserById(id);
 	}
 	
