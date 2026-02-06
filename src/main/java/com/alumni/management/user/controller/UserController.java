@@ -1,42 +1,51 @@
 package com.alumni.management.user.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alumni.management.role.entity.Role;
-import com.alumni.management.role.repository.RoleRepository;
 import com.alumni.management.user.entity.User;
-import com.alumni.management.user.repository.UserRepository;
+import com.alumni.management.user.service.UserService;
 
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("/api/users")
 public class UserController {
 	
 	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
-	private RoleRepository roleRepository;
+	UserService userService;
 	
 	@PostMapping
-	public User createUser(@RequestBody User user)
-	{
+	public User createUser(@RequestBody User user) {
 		
-
-//		below 2 line is just for chekking the role if is it availble or not
-		Role role=roleRepository.findByRoleName(user.getRole().getRoleName())
-		.orElseThrow(()-> new RuntimeException("Role not found"));
 		
-//	If role exist set that role	
-		user.setRole(role);
-
-//Set that user with role in DB
-
-        return userRepository.save(user);
-		
+//		Send the user data to the service layer and then 
+//		service layer will save that data by checking condition
+		return userService.createUser(user);
+		}
+	
+	
+	@GetMapping()
+	public List<User> getAllUsers(@RequestBody User user) {
+		return userService.getAllUsers();
 	}
+
+	@GetMapping("/{id}")
+	public User getUserById(@PathVariable Long id) {
+		return userService.getUserById(id);
+	}
+	
+	@DeleteMapping("/{id}")
+	public String deleteUser(@PathVariable Long id) {
+		userService.deleteUser(id);
+		return "Delete Successfully";
+	}
+	
 }
