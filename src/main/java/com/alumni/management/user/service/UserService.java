@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.alumni.management.exception.ResourceNotFoundException;
 import com.alumni.management.role.entity.Role;
 import com.alumni.management.role.repository.RoleRepository;
+import com.alumni.management.user.dto.LoginRequestDto;
 import com.alumni.management.user.dto.UserResponseDto;
 import com.alumni.management.user.entity.User;
 import com.alumni.management.user.repository.UserRepository;
@@ -20,22 +22,27 @@ public class UserService {
 	UserRepository userRepository;
 	@Autowired
 	RoleRepository roleRepository;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	public User createUser(User user) {
 
-//below 2 line is just for chekking the role if is it availble or not
+//		below 2 line is just for chekking the role if is it availble or not
 
 		Role role = roleRepository.findByRoleName(user.getRole().getRoleName())
-				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+				.orElseThrow(() -> new ResourceNotFoundException("Role not found"));
 
 //		If role exist set that role	
 		user.setRole(role);
+		
+//		Set password by doing encrypted before pass to save() function
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-//Set that user with role in DB
+//		Set that user with role in DB
 		return userRepository.save(user);
 	}
 
-//We write list<userResponseDTO> because it give list of user dto(Dummy entity) not entity(DB)
+//	We write list<userResponseDTO> because it give list of user dto(Dummy entity) not entity(DB)
 	public List<UserResponseDto> getAllUsers() {
 		List<User> users = userRepository.findAll();
 		// stream() rocess users one by one
@@ -79,4 +86,17 @@ public class UserService {
 		return userRepository.save(existingUser);
 
 	}
+
+	public String login(LoginRequestDto request) {
+
+	    User user = userRepository.findByEmail(request.getEmail())
+	            .orElseThrow(() -> new ResourceNotFoundException("Invalid email or password"));
+
+	    if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+	        throw new ResourceNotFoundException("Invalid email or password");
+	    }
+
+	    return "Login successful";
+	}
+
 }
