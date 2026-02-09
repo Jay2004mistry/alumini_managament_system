@@ -29,6 +29,10 @@ public class User {
 
 	@Column(nullable = false)
 	private String password;
+	
+	private String universityNumber;
+	
+	private boolean verified=false;
 
 //	manyToOne is like forign key
 	@ManyToOne
@@ -90,5 +94,22 @@ public class User {
 	public void setRole(Role role) {
 		this.role = role;
 	}
+
+	public String getUniversityNumber() {
+		return universityNumber;
+	}
+
+	public void setUniversityNumber(String universityNumber) {
+		this.universityNumber = universityNumber;
+	}
+
+	public boolean isVerified() {
+		return verified;
+	}
+
+	public void setVerified(boolean verified) {
+		this.verified = verified;
+	}
+	
 
 }

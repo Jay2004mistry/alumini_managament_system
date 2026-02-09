@@ -27,6 +27,7 @@ public class UserController {
 	@PostMapping
 	public User createUser(@RequestBody User user) {
 
+	
 //		Send the user data to the service layer and then 
 //		service layer will save that data by checking condition
 		return userService.createUser(user);
