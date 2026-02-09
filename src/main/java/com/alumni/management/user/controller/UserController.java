@@ -54,9 +54,20 @@ public class UserController {
 
 	}
 	
+//	here we use userResponseDto because we have to send JSON formate to frontend.
+//	First we use String But we change with UerResponseDto ti get all data in JSON formate
 	@PostMapping("/login")
-	public String login(@RequestBody LoginRequestDto request) {
-		return userService.login(request);
+	public UserResponseDto login(@RequestBody LoginRequestDto request) {
+
+	    User user = userService.login(request); // must return User
+
+	    return new UserResponseDto(
+	        user.getId(),
+	        user.getName(),
+	        user.getEmail(),
+	        user.getRole().getRoleName()
+	    );
 	}
+
 
 }

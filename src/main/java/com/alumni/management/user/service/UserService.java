@@ -87,7 +87,7 @@ public class UserService {
 
 	}
 
-	public String login(LoginRequestDto request) {
+	public User login(LoginRequestDto request) {
 
 	    User user = userRepository.findByEmail(request.getEmail())
 	            .orElseThrow(() -> new ResourceNotFoundException("Invalid email or password"));
@@ -96,7 +96,7 @@ public class UserService {
 	        throw new ResourceNotFoundException("Invalid email or password");
 	    }
 
-	    return "Login successful";
+	    return user;
 	}
 
 }
