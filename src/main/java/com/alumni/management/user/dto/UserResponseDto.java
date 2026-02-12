@@ -4,6 +4,8 @@
 //DTOs cannot talk to the database.
 package com.alumni.management.user.dto;
 
+import com.alumni.management.user.entity.User;
+
 public class UserResponseDto {
 
 	private Long id;
@@ -34,5 +36,15 @@ public class UserResponseDto {
 	public String getRoleName() {
 		return roleName;
 	}
+	
+	private UserResponseDto convertToDto(User user) {
+	    return new UserResponseDto(
+	            user.getId(),
+	            user.getName(),
+	            user.getEmail(),
+	            user.getRole().getRoleName()
+	    );
+	}
+
 
 }

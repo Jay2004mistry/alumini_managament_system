@@ -1,5 +1,6 @@
 package com.alumni.management.user.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //	normally use email and password that why	 
 	Optional<User> findByEmail(String email);
 	Optional<User> findByUniversityNumber(String universityNumber);
+	
+	List<User> findByRole_RoleName(String roleName);
+	
 
 }

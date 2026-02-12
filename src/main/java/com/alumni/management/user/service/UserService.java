@@ -34,7 +34,7 @@ public class UserService {
 
 //		If role exist set that role	
 		user.setRole(role);
-		
+
 //		Set password by doing encrypted before pass to save() function
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -45,7 +45,7 @@ public class UserService {
 //	We write list<userResponseDTO> because it give list of user dto(Dummy entity) not entity(DB)
 	public List<UserResponseDto> getAllUsers() {
 		List<User> users = userRepository.findAll();
-		// stream() rocess users one by one
+		// stream() process users one by one
 
 		return users.stream().map(user -> new UserResponseDto(
 //				Convert each User → DTO (map)
@@ -89,14 +89,14 @@ public class UserService {
 
 	public User login(LoginRequestDto request) {
 
-	    User user = userRepository.findByEmail(request.getEmail())
-	            .orElseThrow(() -> new ResourceNotFoundException("Invalid email or password"));
+		User user = userRepository.findByEmail(request.getEmail())
+				.orElseThrow(() -> new ResourceNotFoundException("Invalid email or password"));
 
-	    if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-	        throw new ResourceNotFoundException("Invalid email or password");
-	    }
+		if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+			throw new ResourceNotFoundException("Invalid email or password");
+		}
 
-	    return user;
+		return user;
 	}
 
 }
