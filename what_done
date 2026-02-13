@@ -1,0 +1,15 @@
+                                          We have 3 user(role)(user)User package and role backage
+                                          		|
+												v
+									-------------------------- 		
+									|            |            |
+									V            V            V
+									faculty     Alumni       Admin
+									Package     package      package
+									
+									
+User: create, update , delete, getUserByid, GetAlluser API DONE
+
+Alumni: Create Alumni profile, update and delete and display API DONE
+
+Admin: Get All user , Get user by Role name API DONE

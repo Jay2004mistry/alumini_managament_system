@@ -1,5 +1,7 @@
 package com.alumni.management.alumni.dto;
 
+import com.alumni.management.alumni.entity.AlumniProfile;
+
 public class AlumniProfileDto {
 
 	public Integer batchYear;
@@ -34,6 +36,12 @@ public class AlumniProfileDto {
 		this.contactNumber = contactNumber;
 		this.currentCity = currentCity;
 	}
+
+	
+	public AlumniProfileDto() {
+		super();
+	}
+
 
 	public Integer getBatchYear() {
 		return batchYear;

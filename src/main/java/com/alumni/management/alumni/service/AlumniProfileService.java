@@ -1,5 +1,8 @@
 package com.alumni.management.alumni.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,16 @@ public class AlumniProfileService {
 
 	@Autowired
 	UserRepository UserRepository;
+
+//	Help to not write this everytime just call it using map(this::converToDto)
+	private AlumniProfileDto convertToDto(AlumniProfile alumniProfile) {
+
+		return new AlumniProfileDto(alumniProfile.getBatchYear(), alumniProfile.getDegree(),
+				alumniProfile.getDepartment(), alumniProfile.getDesignation(), alumniProfile.getCompanyName(),
+				alumniProfile.getIndustry(), alumniProfile.getSkills(), alumniProfile.getWorkExperience(),
+				alumniProfile.getLinkedInUrl(), alumniProfile.getGithubUrl(), alumniProfile.getContactNumber(),
+				alumniProfile.getCurrentCity());
+	}
 
 	public String createProfile(Long userId, AlumniProfile profile) {
 
@@ -90,6 +103,24 @@ public class AlumniProfileService {
 		profileRepository.delete(alumniProfile);
 
 		return "Delete the user profile successfully";
+	}
+
+	public List<AlumniProfileDto> searchByName(String name) {
+
+		List<AlumniProfile> alumniProfiles = profileRepository.findByUser_Name(name);
+
+		return alumniProfiles.stream().map(this::convertToDto).collect(Collectors.toList());
+	}
+
+	public List<AlumniProfileDto> searchByBatchYear(Integer batchYear) {
+		List<AlumniProfile> alumniProfile = profileRepository.findByBatchYear(batchYear);
+
+		return alumniProfile.stream().map(this::convertToDto).collect(Collectors.toList());
+	}
+
+	public List<AlumniProfileDto> searchByDepartment(String department) {
+		List<AlumniProfile> alumniProfile = profileRepository.findByDepartment(department);
+		return alumniProfile.stream().map(this::convertToDto).collect(Collectors.toList());
 	}
 
 }

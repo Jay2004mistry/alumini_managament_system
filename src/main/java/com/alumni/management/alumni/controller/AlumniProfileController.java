@@ -1,5 +1,7 @@
 package com.alumni.management.alumni.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,4 +42,25 @@ public class AlumniProfileController {
 	public String deleteProfile(@PathVariable Long userId) {
 		return alumniProfileService.deleteProfile(userId);
 	}
+	
+	@GetMapping("/search/name/{name}")
+	public List<AlumniProfileDto> searchByName(@PathVariable String name) {
+		return alumniProfileService.searchByName(name);
+	}
+	
+	@GetMapping("/search/batchYear/{batchYear}")
+	public List<AlumniProfileDto> searchByBatchYear(@PathVariable Integer batchYear) {
+		return alumniProfileService.searchByBatchYear(batchYear);
+	}
+	
+	@GetMapping("/search/department/{department}")
+	public List<AlumniProfileDto> searchByDepartment(@PathVariable String department) {
+		return alumniProfileService.searchByDepartment(department);
+	}
+	
+	
+	
+	
+	
+	
 }
