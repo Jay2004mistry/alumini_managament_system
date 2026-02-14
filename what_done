@@ -10,6 +10,6 @@
 									
 User: create, update , delete, getUserByid, GetAlluser API DONE
 
-Alumni: Create Alumni profile, update and delete and display API DONE
+Alumni: Create Alumni profile, update and delete and display API DONE, search bu name, department and batchyear
 
 Admin: Get All user , Get user by Role name API DONE
