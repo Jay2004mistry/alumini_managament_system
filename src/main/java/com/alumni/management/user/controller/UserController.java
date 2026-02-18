@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alumni.management.user.dto.LoginRequestDto;
+import com.alumni.management.user.dto.LoginResponseDto;
 import com.alumni.management.user.dto.UserResponseDto;
 import com.alumni.management.user.entity.User;
 import com.alumni.management.user.service.UserService;
@@ -55,20 +56,12 @@ public class UserController {
 
 	}
 	
-//	here we use userResponseDto because we have to send JSON formate to frontend.
-//	First we use String But we change with UerResponseDto ti get all data in JSON formate
+
 	@PostMapping("/login")
-	public UserResponseDto login(@RequestBody LoginRequestDto request) {
-
-	    User user = userService.login(request); // must return User
-
-	    return new UserResponseDto(
-	        user.getId(),
-	        user.getName(),
-	        user.getEmail(),
-	        user.getRole().getRoleName()
-	    );
+	public LoginResponseDto login(@RequestBody LoginRequestDto request) {
+	    return userService.login(request);
 	}
+
 
 
 }
