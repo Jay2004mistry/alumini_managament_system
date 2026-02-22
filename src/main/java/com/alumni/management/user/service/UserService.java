@@ -101,7 +101,10 @@ public class UserService {
 		}
 	    String token = jwtUtil.generateToken(user.getEmail());
 
-		return new LoginResponseDto(token);
-	}
+	    return new LoginResponseDto(
+	    	    token,
+	    	    user.getName(),
+	    	    user.getRole().getRoleName()
+	    	);	}
 
 }
