@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.alumni.management.alumni.dto.AlumniProfileDto;
@@ -16,11 +17,19 @@ import com.alumni.management.user.repository.UserRepository;
 @Service
 public class AlumniProfileService {
 
+
 	@Autowired
 	AlumniProfileRepository profileRepository;
 
 	@Autowired
 	UserRepository UserRepository;
+
+	
+//	Jwt Authentication
+	private User getCurrentUser() {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		return UserRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+	}
 
 //	Help to not write this everytime just call it using map(this::converToDto)
 	private AlumniProfileDto convertToDto(AlumniProfile alumniProfile) {
@@ -32,15 +41,14 @@ public class AlumniProfileService {
 				alumniProfile.getCurrentCity());
 	}
 
-	public String createProfile(Long userId, AlumniProfile profile) {
+	public String createProfile(AlumniProfile profile) {
 
-		User user = UserRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
+		User user = getCurrentUser();
 		if (!"ALUMNI".equals(user.getRole().getRoleName())) {
 			throw new RuntimeException("Only alumni can create the profile");
 		}
 
-		AlumniProfile alumniProfile = profileRepository.findByUserId(userId).orElse(new AlumniProfile());
+		AlumniProfile alumniProfile = profileRepository.findByUserId(user.getId()).orElse(new AlumniProfile());
 
 		alumniProfile.setUser(user);
 		alumniProfile.setBatchYear(profile.getBatchYear());
@@ -63,8 +71,10 @@ public class AlumniProfileService {
 		return "Profile saved successfully";
 	}
 
-	public AlumniProfileDto getProfileByUserId(Long userId) {
-		AlumniProfile alumniProfile = profileRepository.findByUserId(userId)
+	public AlumniProfileDto getProfileByUserId() {
+		User user = getCurrentUser();
+
+		AlumniProfile alumniProfile = profileRepository.findByUserId(user.getId())
 				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
 		return new AlumniProfileDto(alumniProfile.getBatchYear(), alumniProfile.getDegree(),
 				alumniProfile.getDepartment(), alumniProfile.getDesignation(), alumniProfile.getCompanyName(),
@@ -73,8 +83,10 @@ public class AlumniProfileService {
 				alumniProfile.getCurrentCity());
 	}
 
-	public String updateProfile(Long userId, AlumniProfile profile) {
-		AlumniProfile alumniProfile = profileRepository.findByUserId(userId).orElse(new AlumniProfile());
+	public String updateProfile(AlumniProfile profile) {
+		User user = getCurrentUser();
+
+		AlumniProfile alumniProfile = profileRepository.findByUserId(user.getId()).orElse(new AlumniProfile());
 
 		alumniProfile.setBatchYear(profile.getBatchYear());
 		alumniProfile.setDegree(profile.getDegree());
@@ -97,8 +109,10 @@ public class AlumniProfileService {
 
 	}
 
-	public String deleteProfile(Long userId) {
-		AlumniProfile alumniProfile = profileRepository.findByUserId(userId)
+	public String deleteProfile() {
+		User user = getCurrentUser();
+
+		AlumniProfile alumniProfile = profileRepository.findByUserId(user.getId())
 				.orElseThrow(() -> new ResourceNotFoundException("user not found"));
 		profileRepository.delete(alumniProfile);
 

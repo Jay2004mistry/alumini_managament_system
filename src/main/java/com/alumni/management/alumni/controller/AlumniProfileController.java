@@ -23,44 +23,39 @@ public class AlumniProfileController {
 	@Autowired
 	AlumniProfileService alumniProfileService;
 
-	@PostMapping("/profile/{userId}")
-	public String createProfile(@PathVariable Long userId, @RequestBody AlumniProfile profile) {
-		return alumniProfileService.createProfile(userId, profile);
+	@PostMapping("/profile")
+	public String createProfile(@RequestBody AlumniProfile profile) {
+		return alumniProfileService.createProfile(profile);
 	}
 
-	@GetMapping("/profile/{userId}")
-	public AlumniProfileDto getProfile(@PathVariable Long userId) {
-		return alumniProfileService.getProfileByUserId(userId);
+	@GetMapping("/profile")
+	public AlumniProfileDto getProfile() {
+		return alumniProfileService.getProfileByUserId();
 	}
 
-	@PutMapping("/profile/{userId}")
-	public String updateProfile(@PathVariable Long userId, @RequestBody AlumniProfile profile) {
-		return alumniProfileService.updateProfile(userId, profile);
+	@PutMapping("/profile")
+	public String updateProfile(@RequestBody AlumniProfile profile) {
+		return alumniProfileService.updateProfile(profile);
 	}
 
-	@DeleteMapping("/profile/{userId}")
-	public String deleteProfile(@PathVariable Long userId) {
-		return alumniProfileService.deleteProfile(userId);
+	@DeleteMapping("/profile")
+	public String deleteProfile() {
+		return alumniProfileService.deleteProfile();
 	}
-	
+
 	@GetMapping("/search/name/{name}")
 	public List<AlumniProfileDto> searchByName(@PathVariable String name) {
 		return alumniProfileService.searchByName(name);
 	}
-	
+
 	@GetMapping("/search/batchYear/{batchYear}")
 	public List<AlumniProfileDto> searchByBatchYear(@PathVariable Integer batchYear) {
 		return alumniProfileService.searchByBatchYear(batchYear);
 	}
-	
+
 	@GetMapping("/search/department/{department}")
 	public List<AlumniProfileDto> searchByDepartment(@PathVariable String department) {
 		return alumniProfileService.searchByDepartment(department);
 	}
-	
-	
-	
-	
-	
-	
+
 }

@@ -20,34 +20,30 @@ import com.alumni.management.faculty.service.FacultyService;
 @RequestMapping("api/faculty")
 public class FacultyController {
 
-    private final FacultyRepository facultyRepository;
 	
 
 	@Autowired
-	FacultyService facultyService;
+	private FacultyService facultyService;
 
 
-    FacultyController(FacultyRepository facultyRepository) {
-        this.facultyRepository = facultyRepository;
-    }
+  
 	
-	
-	@PostMapping("profile/{userId}")
-	public String createFacultyProfile(@PathVariable Long userId, @RequestBody FacultyProfile facultyProfile) {
-		return facultyService.createFacultyProfile(userId,facultyProfile);
+	@PostMapping("profile")
+	public String createFacultyProfile(@RequestBody FacultyProfile facultyProfile) {
+		return facultyService.createFacultyProfile(facultyProfile);
 	}
 	
-	@GetMapping("profile/{userId}")
-	public FacultyProfileDto getFacultyProfile(@PathVariable Long userId) {
-		return facultyService.getFacultyProfile(userId);
+	@GetMapping("profile")
+	public FacultyProfileDto getFacultyProfile() {
+		return facultyService.getFacultyProfile();
 	}
-	@PutMapping("profile/{userId}")
-	public String updateFacultyProfile(@PathVariable Long userId, @RequestBody FacultyProfile facultyProfile) {
-		return facultyService.updateFacultyProfile(userId,facultyProfile);
+	@PutMapping("profile")
+	public String updateFacultyProfile(@RequestBody FacultyProfile facultyProfile) {
+		return facultyService.updateFacultyProfile(facultyProfile);
 	}
-	@DeleteMapping("profile/{userId}")
-	public String deleteFacultyProfile(@PathVariable Long userId) {
-		return facultyService.deleteFacultyProfile(userId);
+	@DeleteMapping("profile")
+	public String deleteFacultyProfile() {
+		return facultyService.deleteFacultyProfile();
 		
 	}
 

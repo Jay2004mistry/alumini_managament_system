@@ -1,6 +1,7 @@
 package com.alumni.management.faculty.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.alumni.management.alumni.dto.AlumniProfileDto;
@@ -23,13 +24,20 @@ public class FacultyService {
 	@Autowired
 	UserRepository userRepository;
 
-	public String createFacultyProfile(Long userId, FacultyProfile facultyProfile) {
-		User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+//	JWT get user after getting token instade if taking userId by using email and token
 
+	private User getCurrentUser() {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+
+	}
+
+	public String createFacultyProfile(FacultyProfile facultyProfile) {
+		User user = getCurrentUser();
 		if (!"FACULTY".equals(user.getRole().getRoleName())) {
 			throw new RuntimeException("Only faculty can create profile");
 		}
-		FacultyProfile profile = facultyRepository.findByUserId(userId).orElse(new FacultyProfile());
+		FacultyProfile profile = facultyRepository.findByUserId(user.getId()).orElse(new FacultyProfile());
 		profile.setUser(user);
 		profile.setDepartment(facultyProfile.getDepartment());
 		profile.setDesignation(facultyProfile.getDesignation());
@@ -47,8 +55,9 @@ public class FacultyService {
 		return "Profile add successfully";
 	}
 
-	public FacultyProfileDto getFacultyProfile(Long userId) {
-		FacultyProfile profile = facultyRepository.findByUserId(userId)
+	public FacultyProfileDto getFacultyProfile() {
+		User user = getCurrentUser();
+		FacultyProfile profile = facultyRepository.findByUserId(user.getId())
 				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
 		return new FacultyProfileDto(profile.getDepartment(), profile.getDesignation(), profile.getQualification(),
@@ -56,9 +65,11 @@ public class FacultyService {
 				profile.getContactNumber(), profile.getResearchInterests(), profile.getBio(), profile.getLinkedInUrl());
 	}
 
-	public String updateFacultyProfile(Long userId, FacultyProfile facultyProfile) {
-		FacultyProfile profile = facultyRepository.findByUserId(userId).orElseThrow(
-				()->new ResourceNotFoundException("Faculty not found"));
+	public String updateFacultyProfile(FacultyProfile facultyProfile) {
+		User user = getCurrentUser();
+
+		FacultyProfile profile = facultyRepository.findByUserId(user.getId())
+				.orElseThrow(() -> new ResourceNotFoundException("Faculty not found"));
 		profile.setDepartment(facultyProfile.getDepartment());
 		profile.setDesignation(facultyProfile.getDesignation());
 		profile.setQualification(facultyProfile.getQualification());
@@ -75,9 +86,11 @@ public class FacultyService {
 		return "Profile Update successfully";
 	}
 
-	public String deleteFacultyProfile(Long userId) {
-		FacultyProfile facultyProfile=facultyRepository.findByUserId(userId).orElseThrow(
-				()->new ResourceNotFoundException("No faculty profile has been found"));
+	public String deleteFacultyProfile() {
+		User user = getCurrentUser();
+
+		FacultyProfile facultyProfile = facultyRepository.findByUserId(user.getId())
+				.orElseThrow(() -> new ResourceNotFoundException("No faculty profile has been found"));
 		facultyRepository.delete(facultyProfile);
 		return "Faculty profile delete successfully";
 	}

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.alumni.management.event.entity.Event;
@@ -21,9 +22,17 @@ public class EventService {
 	@Autowired
 	UserRepository userRepository;
 
-	public String createEvent(Long userId, Event event) {
-		User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
+	
+//	jwt authentication for token genration
+	
+	private User getCurrentUser() {
+		String email=SecurityContextHolder.getContext().getAuthentication().getName();
+		return userRepository.findByEmail(email).orElseThrow(
+				()-> new RuntimeException("User not found"));
+	}
+	
+	public String createEvent(Event event) {
+User user=getCurrentUser();
 		Event event2 = new Event();
 		event2.setTitle(event.getTitle());
 		event2.setDescription(event.getDescription());
@@ -44,11 +53,12 @@ public class EventService {
 		return eventRepository.findByStatus("APPROVED");
 	}
 
-	public List<Event> getMyEvents(Long userId) {
+	public List<Event> getMyEvents() {
 
-		userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+		User user=getCurrentUser();
+		userRepository.findById(user.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-		return eventRepository.findByCreatedBy_Id(userId);
+		return eventRepository.findByCreatedBy_Id(user.getId());
 	}
 
 	public List<Event> getPendingEvents() {

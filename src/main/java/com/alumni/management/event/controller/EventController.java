@@ -21,11 +21,11 @@ public class EventController {
 	@Autowired
 	private EventService eventService;
 
-	@PostMapping("/{userId}")
+	@PostMapping()
 
-	public String createEvent(@PathVariable Long userId, @RequestBody Event event) {
+	public String createEvent(@RequestBody Event event) {
 
-		return eventService.createEvent(userId, event);
+		return eventService.createEvent( event);
 	}
 //get approved event(publiclly)
 	@GetMapping
@@ -33,9 +33,9 @@ public class EventController {
 		return eventService.getApprovedEvents();
 	}
 //My event
-	@GetMapping("/my/{userId}")
-	public List<Event> getMyEvents(@PathVariable Long userId) {
-		return eventService.getMyEvents(userId);
+	@GetMapping("/my")
+	public List<Event> getMyEvents() {
+		return eventService.getMyEvents();
 	}
 
 //	Now only admin can access below 3

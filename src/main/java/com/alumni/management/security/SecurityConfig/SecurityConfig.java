@@ -16,20 +16,35 @@ import com.alumni.management.security.JwtFilter.JwtFilter;
 @Configuration
 public class SecurityConfig {
 
-	@Autowired
-	private JwtFilter jwtFilter;
+    @Autowired
+    private JwtFilter jwtFilter;
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-		http.csrf(csrf -> csrf.disable())
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/users/login").permitAll()
-						.requestMatchers("/api/users").permitAll() // allow registration
-						.anyRequest().authenticated())
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		http.addFilterBefore(jwtFilter,
-				org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                    // Public endpoints
+                    .requestMatchers("/api/users/login").permitAll()
+                    .requestMatchers("/api/users").permitAll()
+                    .requestMatchers("/api/events").permitAll()
 
-		return http.build();
-	}
+                    // Admin endpoints
+                    .requestMatchers("/api/events/admin/**").hasRole("ADMIN")
+
+                    // Authenticated endpoints
+                    .requestMatchers("/api/events/my").authenticated()
+
+                    // Everything else
+                    .anyRequest().authenticated()
+            )
+            .sessionManagement(session ->
+                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .addFilterBefore(jwtFilter,
+                    org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
 }
