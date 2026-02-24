@@ -3,6 +3,7 @@ package com.alumni.management.event.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,11 +45,14 @@ public class EventController {
 		return eventService.getPendingEvents();
 	}
 
+//	@PreAuthorize("hasRole('ADMIN')") means only admin can do it
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/admin/approve/{eventId}")
 	public String approveEvent(@PathVariable Long eventId) {
 		return eventService.approveEvent(eventId);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/admin/reject/{eventId}")
 	public String rejectEvent(@PathVariable Long eventId) {
 		return eventService.rejectEvent(eventId);

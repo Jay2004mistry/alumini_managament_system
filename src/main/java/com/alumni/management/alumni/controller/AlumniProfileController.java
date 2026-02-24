@@ -3,6 +3,7 @@ package com.alumni.management.alumni.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,8 @@ public class AlumniProfileController {
 	@Autowired
 	AlumniProfileService alumniProfileService;
 
+//	@PreAuthorize("hasRole('ALUMNI')") means only alumni can do it
+	@PreAuthorize("hasRole('ALUMNI')")
 	@PostMapping("/profile")
 	public String createProfile(@RequestBody AlumniProfile profile) {
 		return alumniProfileService.createProfile(profile);

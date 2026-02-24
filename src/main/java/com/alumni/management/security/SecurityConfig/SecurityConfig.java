@@ -3,6 +3,7 @@ package com.alumni.management.security.SecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -14,6 +15,12 @@ import com.alumni.management.security.JwtFilter.JwtFilter;
 //Requires authentication for everything else
 // Makes app stateless (no server sessions)
 @Configuration
+
+
+//When you add this annotation to a @Configuration class, it enables Spring Security's
+//AOP (Aspect-Oriented Programming) security interceptors. This means you can dictate
+//exactly who is allowed to execute a specific method based on their roles, authorities
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Autowired
