@@ -17,14 +17,12 @@ import com.alumni.management.user.repository.UserRepository;
 @Service
 public class AlumniProfileService {
 
-
 	@Autowired
 	AlumniProfileRepository profileRepository;
 
 	@Autowired
 	UserRepository UserRepository;
 
-	
 //	Jwt Authentication
 	private User getCurrentUser() {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -87,7 +85,9 @@ public class AlumniProfileService {
 		User user = getCurrentUser();
 
 		AlumniProfile alumniProfile = profileRepository.findByUserId(user.getId()).orElse(new AlumniProfile());
-
+//		if user edit and then login save data gone so i have to add this line so data keep 
+//		even after logout and then login
+		alumniProfile.setUser(user);
 		alumniProfile.setBatchYear(profile.getBatchYear());
 		alumniProfile.setDegree(profile.getDegree());
 		alumniProfile.setDepartment(profile.getDepartment());

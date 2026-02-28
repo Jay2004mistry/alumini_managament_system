@@ -31,9 +31,11 @@ public class Event {
 	@ManyToOne
 	@JoinColumn(name = "created_by")
 	private User createdBy;
+//	Add this new 1 if code not work remove it
+	private String imageUrl;
 
 	public Event(Long id, String title, String description, String location, LocalDate eventDate, String status,
-			LocalDateTime createdAt, User createdBy) {
+			LocalDateTime createdAt, User createdBy, String imageUrl) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -43,15 +45,13 @@ public class Event {
 		this.status = status;
 		this.createdAt = createdAt;
 		this.createdBy = createdBy;
+		this.imageUrl = imageUrl;
+
 	}
-	
-	
 
 	public Event() {
 		super();
 	}
-
-
 
 	public Long getId() {
 		return id;
@@ -115,6 +115,14 @@ public class Event {
 
 	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 }

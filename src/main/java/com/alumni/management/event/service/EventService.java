@@ -1,11 +1,15 @@
 package com.alumni.management.event.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alumni.management.event.entity.Event;
 import com.alumni.management.event.repository.EventRepository;
@@ -22,32 +26,74 @@ public class EventService {
 	@Autowired
 	UserRepository userRepository;
 
-	
 //	jwt authentication for token genration
-	
+
 	private User getCurrentUser() {
-		String email=SecurityContextHolder.getContext().getAuthentication().getName();
-		return userRepository.findByEmail(email).orElseThrow(
-				()-> new RuntimeException("User not found"));
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
 	}
-	
-	public String createEvent(Event event) {
-User user=getCurrentUser();
-		Event event2 = new Event();
-		event2.setTitle(event.getTitle());
-		event2.setDescription(event.getDescription());
-		event2.setLocation(event.getLocation());
-		event2.setEventDate(event.getEventDate());
 
-		event2.setStatus("PENDING");
-		event2.setCreatedAt(LocalDateTime.now());
-		event2.setCreatedBy(user);
+//	//	Add this new 1 if code not work remove it untill 		return "Event submitted for approval";
 
-		eventRepository.save(event2);
+	public String createEvent(String title, String description, String location, LocalDate eventDate,
+			MultipartFile image) {
+		User user = getCurrentUser();
 
+		Event event = new Event();
+		event.setTitle(title);
+		event.setDescription(description);
+		event.setLocation(location);
+		event.setEventDate(eventDate);
+		event.setStatus("PENDING");
+		event.setCreatedAt(LocalDateTime.now());
+		event.setCreatedBy(user);
+
+// Handle image upload if present
+		if (image != null && !image.isEmpty()) {
+			try {
+// Create upload directory if it doesn't exist
+				String uploadDir = "uploads/events/";
+				File directory = new File(uploadDir);
+				if (!directory.exists()) {
+					directory.mkdirs();
+				}
+
+// Generate unique filename
+				String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+				String filePath = uploadDir + fileName;
+
+// Save file
+				image.transferTo(new File(filePath));
+
+// Set image URL (you can serve this statically)
+				event.setImageUrl("/uploads/events/" + fileName);
+
+			} catch (IOException e) {
+				throw new RuntimeException("Failed to upload image", e);
+			}
+		}
+
+		eventRepository.save(event);
 		return "Event submitted for approval";
-
 	}
+
+//	public String createEvent(Event event) {
+//User user=getCurrentUser();
+//		Event event2 = new Event();
+//		event2.setTitle(event.getTitle());
+//		event2.setDescription(event.getDescription());
+//		event2.setLocation(event.getLocation());
+//		event2.setEventDate(event.getEventDate());
+//
+//		event2.setStatus("PENDING");
+//		event2.setCreatedAt(LocalDateTime.now());
+//		event2.setCreatedBy(user);
+//
+//		eventRepository.save(event2);
+//
+//		return "Event submitted for approval";
+//
+//	}
 
 	public List<Event> getApprovedEvents() {
 		return eventRepository.findByStatus("APPROVED");
@@ -55,7 +101,7 @@ User user=getCurrentUser();
 
 	public List<Event> getMyEvents() {
 
-		User user=getCurrentUser();
+		User user = getCurrentUser();
 		userRepository.findById(user.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
 		return eventRepository.findByCreatedBy_Id(user.getId());

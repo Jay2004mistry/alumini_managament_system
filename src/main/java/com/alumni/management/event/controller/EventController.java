@@ -1,8 +1,10 @@
 package com.alumni.management.event.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alumni.management.event.entity.Event;
 import com.alumni.management.event.service.EventService;
@@ -22,17 +26,29 @@ public class EventController {
 	@Autowired
 	private EventService eventService;
 
-	@PostMapping()
+//	Add this new 1 if code not work remove it
+	@PostMapping(consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
+	public String createEvent(@RequestParam("title") String title, @RequestParam("description") String description,
+			@RequestParam("location") String location,
+			@RequestParam("eventDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate eventDate,
+			@RequestParam(value = "image", required = false) MultipartFile image) {
 
-	public String createEvent(@RequestBody Event event) {
-
-		return eventService.createEvent( event);
+		return eventService.createEvent(title, description, location, eventDate, image);
 	}
+
+	@PostMapping()
+//
+//	public String createEvent(@RequestBody Event event) {
+//
+//		return eventService.createEvent(event);
+//	}
+
 //get approved event(publiclly)
 	@GetMapping
 	public List<Event> getApprovedEvents() {
 		return eventService.getApprovedEvents();
 	}
+
 //My event
 	@GetMapping("/my")
 	public List<Event> getMyEvents() {

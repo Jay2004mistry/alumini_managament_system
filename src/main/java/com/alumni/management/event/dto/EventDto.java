@@ -13,11 +13,11 @@ public class EventDto {
 	private String status; // PENDING, APPROVED, REJECTED
 
 	private LocalDateTime createdAt;
-	
-	
+//	Add this new 1 if code not work remove it
+	private String imageUrl;
 
 	public EventDto(String title, String description, String location, LocalDate eventDate, String status,
-			LocalDateTime createdAt) {
+			LocalDateTime createdAt, String imageUrl) {
 		super();
 		this.title = title;
 		this.description = description;
@@ -25,13 +25,12 @@ public class EventDto {
 		this.eventDate = eventDate;
 		this.status = status;
 		this.createdAt = createdAt;
+		this.imageUrl = imageUrl;
 	}
-	
 
 	public EventDto() {
 		super();
 	}
-
 
 	public String getTitle() {
 		return title;
@@ -55,6 +54,10 @@ public class EventDto {
 
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
 	}
 	
 
