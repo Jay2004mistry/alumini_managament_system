@@ -61,6 +61,10 @@ public class UserController {
 	public LoginResponseDto login(@RequestBody LoginRequestDto request) {
 	    return userService.login(request);
 	}
+	@GetMapping("/search/name/{name}")
+	public List<UserResponseDto> searchUsersByName(@PathVariable String name) {
+	    return userService.searchUsersByName(name);
+	}
 	
 	
 

@@ -4,25 +4,26 @@ import com.alumni.management.alumni.entity.AlumniProfile;
 
 public class AlumniProfileDto {
 
+	public String userName;  // ADD THIS FIELD
 	public Integer batchYear;
 	public String degree;
 	public String department;
-
 	public String designation;
 	public String companyName;
 	public String industry;
 	public String skills;
 	public Double workExperience;
-
 	public String linkedInUrl;
 	public String githubUrl;
 	public String contactNumber;
 	public String currentCity;
 
-	public AlumniProfileDto(Integer batchYear, String degree, String department, String designation, String companyName,
-			String industry, String skills, Double workExperience, String linkedInUrl, String githubUrl,
-			String contactNumber, String currentCity) {
+	// Update constructor to include userName
+	public AlumniProfileDto(String userName, Integer batchYear, String degree, String department, String designation, 
+			String companyName, String industry, String skills, Double workExperience, String linkedInUrl, 
+			String githubUrl, String contactNumber, String currentCity) {
 		super();
+		this.userName = userName;  // ADD THIS
 		this.batchYear = batchYear;
 		this.degree = degree;
 		this.department = department;
@@ -37,11 +38,14 @@ public class AlumniProfileDto {
 		this.currentCity = currentCity;
 	}
 
-	
 	public AlumniProfileDto() {
 		super();
 	}
 
+	// ADD GETTER FOR USERNAME
+	public String getUserName() {
+		return userName;
+	}
 
 	public Integer getBatchYear() {
 		return batchYear;

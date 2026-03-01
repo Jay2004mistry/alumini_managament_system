@@ -46,6 +46,7 @@ public class AlumniProfileController {
 		return alumniProfileService.deleteProfile();
 	}
 
+//	search profile by name
 	@GetMapping("/search/name/{name}")
 	public List<AlumniProfileDto> searchByName(@PathVariable String name) {
 		return alumniProfileService.searchByName(name);
@@ -61,4 +62,18 @@ public class AlumniProfileController {
 		return alumniProfileService.searchByDepartment(department);
 	}
 
+	
+	
+//	inside alumni open profile
+	// 1. Get all alumni profiles (for the list view showing names)
+	@GetMapping("/all")
+	public List<AlumniProfileDto> getAllAlumniProfiles() {
+	    return alumniProfileService.getAllAlumniProfiles();
+	}
+
+	// 2. Get specific alumni profile by user ID (when clicked)
+	@GetMapping("/user/{userId}")
+	public AlumniProfileDto getAlumniProfileByUserId(@PathVariable Long userId) {
+	    return alumniProfileService.getAlumniProfileByUserId(userId);
+	}
 }

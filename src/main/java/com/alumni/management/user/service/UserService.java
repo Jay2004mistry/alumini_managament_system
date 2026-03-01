@@ -106,5 +106,17 @@ public class UserService {
 	    	    user.getName(),
 	    	    user.getRole().getRoleName()
 	    	);	}
+	
+	
+	public List<UserResponseDto> searchUsersByName(String name) {
+	    List<User> users = userRepository.findByNameContainingIgnoreCase(name);
+	    return users.stream()
+	        .map(user -> new UserResponseDto(
+	            user.getId(), 
+	            user.getName(), 
+	            user.getEmail(), 
+	            user.getRole().getRoleName()))
+	        .collect(Collectors.toList());
+	}
 
 }
