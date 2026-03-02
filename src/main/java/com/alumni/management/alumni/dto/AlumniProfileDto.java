@@ -4,26 +4,28 @@ import com.alumni.management.alumni.entity.AlumniProfile;
 
 public class AlumniProfileDto {
 
-	public String userName;  // ADD THIS FIELD
-	public Integer batchYear;
-	public String degree;
-	public String department;
-	public String designation;
-	public String companyName;
-	public String industry;
-	public String skills;
-	public Double workExperience;
-	public String linkedInUrl;
-	public String githubUrl;
-	public String contactNumber;
-	public String currentCity;
+	private Long userId;
+	private String userName;
+	private Integer batchYear;
+	private String degree;
+	private String department;
+	private String designation;
+	private String companyName;
+	private String industry;
+	private String skills;
+	private Double workExperience;
+	private String linkedInUrl;
+	private String githubUrl;
+	private String contactNumber;
+	private String currentCity;
 
 	// Update constructor to include userName
-	public AlumniProfileDto(String userName, Integer batchYear, String degree, String department, String designation, 
-			String companyName, String industry, String skills, Double workExperience, String linkedInUrl, 
-			String githubUrl, String contactNumber, String currentCity) {
+	public AlumniProfileDto(Long userId, String userName, Integer batchYear, String degree, String department,
+			String designation, String companyName, String industry, String skills, Double workExperience,
+			String linkedInUrl, String githubUrl, String contactNumber, String currentCity) {
 		super();
-		this.userName = userName;  // ADD THIS
+		this.userId = userId;
+		this.userName = userName; 
 		this.batchYear = batchYear;
 		this.degree = degree;
 		this.department = department;
@@ -42,7 +44,10 @@ public class AlumniProfileDto {
 		super();
 	}
 
-	// ADD GETTER FOR USERNAME
+	public Long getUserId() {
+		return userId;
+	}
+
 	public String getUserName() {
 		return userName;
 	}

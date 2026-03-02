@@ -31,20 +31,13 @@ public class AlumniProfileService {
 
 //	Help to not write this everytime just call it using map(this::converToDto)
 	private AlumniProfileDto convertToDto(AlumniProfile alumniProfile) {
-	    return new AlumniProfileDto(
-	        alumniProfile.getUser().getName(),  // Add this
-	        alumniProfile.getBatchYear(), 
-	        alumniProfile.getDegree(),
-	        alumniProfile.getDepartment(), 
-	        alumniProfile.getDesignation(), 
-	        alumniProfile.getCompanyName(),
-	        alumniProfile.getIndustry(), 
-	        alumniProfile.getSkills(), 
-	        alumniProfile.getWorkExperience(),
-	        alumniProfile.getLinkedInUrl(), 
-	        alumniProfile.getGithubUrl(), 
-	        alumniProfile.getContactNumber(),
-	        alumniProfile.getCurrentCity());
+		return new AlumniProfileDto(alumniProfile.getUser().getId(),
+
+				alumniProfile.getUser().getName(), alumniProfile.getBatchYear(), alumniProfile.getDegree(),
+				alumniProfile.getDepartment(), alumniProfile.getDesignation(), alumniProfile.getCompanyName(),
+				alumniProfile.getIndustry(), alumniProfile.getSkills(), alumniProfile.getWorkExperience(),
+				alumniProfile.getLinkedInUrl(), alumniProfile.getGithubUrl(), alumniProfile.getContactNumber(),
+				alumniProfile.getCurrentCity());
 	}
 
 	public String createProfile(AlumniProfile profile) {
@@ -78,10 +71,10 @@ public class AlumniProfileService {
 	}
 
 	public AlumniProfileDto getProfileByUserId() {
-	    User user = getCurrentUser();
-	    AlumniProfile alumniProfile = profileRepository.findByUserId(user.getId())
-	            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-	    return convertToDto(alumniProfile);  // This one line does everything!
+		User user = getCurrentUser();
+		AlumniProfile alumniProfile = profileRepository.findByUserId(user.getId())
+				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+		return convertToDto(alumniProfile); // This one line does everything!
 	}
 
 	public String updateProfile(AlumniProfile profile) {
@@ -137,22 +130,19 @@ public class AlumniProfileService {
 		List<AlumniProfile> alumniProfile = profileRepository.findByDepartment(department);
 		return alumniProfile.stream().map(this::convertToDto).collect(Collectors.toList());
 	}
-	
-	
+
 //	open profile based on click on name
 	// 1. Get all alumni profiles
 	public List<AlumniProfileDto> getAllAlumniProfiles() {
-	    List<AlumniProfile> profiles = profileRepository.findAll();
-	    return profiles.stream()
-	        .map(this::convertToDto)
-	        .collect(Collectors.toList());
+		List<AlumniProfile> profiles = profileRepository.findAll();
+		return profiles.stream().map(this::convertToDto).collect(Collectors.toList());
 	}
 
 	// 2. Get profile by user ID (you already have this method but let's add it)
 	public AlumniProfileDto getAlumniProfileByUserId(Long userId) {
-	    AlumniProfile profile = profileRepository.findByUserId(userId)
-	        .orElseThrow(() -> new ResourceNotFoundException("Profile not found for user id: " + userId));
-	    return convertToDto(profile);
+		AlumniProfile profile = profileRepository.findByUserId(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("Profile not found for user id: " + userId));
+		return convertToDto(profile);
 	}
 
 }

@@ -66,7 +66,7 @@ public class AlumniProfileController {
 	
 //	inside alumni open profile
 	// 1. Get all alumni profiles (for the list view showing names)
-	@GetMapping("/all")
+	@GetMapping()
 	public List<AlumniProfileDto> getAllAlumniProfiles() {
 	    return alumniProfileService.getAllAlumniProfiles();
 	}
