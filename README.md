@@ -1,32 +1,54 @@
-🚗 Car Rental System – Backend (PHP OOP)
+🎓 Alumni Management System – Backend (Spring Boot)
 📌 Overview
 
-This is the backend API for the Car Rental System, built using Core PHP with Object-Oriented Programming (OOP) principles.
-It provides secure and scalable APIs for managing users, cars, bookings, and admin operations.
+This is the backend API for the Alumni Management System, built using Spring Boot.
+It provides secure and scalable REST APIs for managing alumni data, job postings, and admin operations.
 
-The system is designed to work with a React.js frontend (separate repository).
+The system is designed to work with a Flutter mobile application (separate repository).
 
 ⚙️ Tech Stack
-PHP (OOP)
+Java
+Spring Boot
+Spring Data JPA
+Hibernate
 MySQL
-Apache / XAMPP
-PHPMailer (for email services)
-RESTful API Architecture
+Spring Security (if used)
+Maven
 ✨ Features
-👤 User Features
-User Registration with OTP verification
-Login & Authentication
-Forgot Password (Email via PHPMailer)
-Browse available cars
-Book cars
-View booking history
-🛠️ Admin Panel
-Admin Login
-Manage Cars (Add / Update / Delete)
-Manage Users
-View & Manage Bookings
-Dashboard with system insights
+👨‍🎓 Student Features (API)
+View alumni profiles
+Search alumni by name, company, skills
+View job postings
+
+⚠️ Students have read-only access (no profile creation)
+
+🛠️ Admin Features
+Admin authentication
+Add / Update / Delete Alumni
+Manage job postings
+Manage users
+Dashboard data APIs
 🔐 Security Features
-Password hashing
-Input validation & sanitization
-Secure API endpoints
+Role-based access (Admin / User)
+Secure endpoints
+Input validation
+Password encryption
+
+
+🔄 API Testing
+
+You can test APIs using:
+
+Postman
+Thunder Client
+🔗 Frontend Repository
+
+👉 Flutter App:
+(Add your frontend repo link here)
+
+🚀 Future Improvements
+JWT Authentication
+Pagination & filtering
+File upload (profile images)
+Email notifications
+Analytics dashboard
