@@ -23,6 +23,10 @@ public class JobService {
 	JobRepository jobRepository;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	com.alumni.management.alumni.repository.AlumniProfileRepository alumniProfileRepository;
+	@Autowired
+	com.alumni.management.faculty.repository.FacultyRepository facultyRepository;
 
 //	jwt authentication
 	private User getCurrUser() {
@@ -32,9 +36,48 @@ public class JobService {
 
 //	onvert he job entity into dto for use
 	private JobDto convertToDto(Job job) {
-		return new JobDto(job.getUser().getId(), job.getUser().getName(), job.getCompanyName(), job.getJobTitle(),
+		String posterDepartment = "N/A";
+		String posterBatchYear = "N/A";
+
+		if (job.getUser() != null) {
+			Long userId = job.getUser().getId();
+			if (job.getUser().getRole() != null) {
+				String roleName = job.getUser().getRole().getRoleName();
+				if ("ALUMNI".equals(roleName)) {
+					java.util.Optional<com.alumni.management.alumni.entity.AlumniProfile> alumniProfileOpt = alumniProfileRepository.findByUserId(userId);
+					if (alumniProfileOpt.isPresent()) {
+						com.alumni.management.alumni.entity.AlumniProfile profile = alumniProfileOpt.get();
+						if (profile.getDepartment() != null && !profile.getDepartment().isEmpty()) {
+							posterDepartment = profile.getDepartment();
+						}
+						if (profile.getBatchYear() != null) {
+							posterBatchYear = "Class of " + profile.getBatchYear().toString();
+						}
+					}
+				} else if ("FACULTY".equals(roleName)) {
+					java.util.Optional<com.alumni.management.faculty.entity.FacultyProfile> facultyProfileOpt = facultyRepository.findByUserId(userId);
+					if (facultyProfileOpt.isPresent()) {
+						com.alumni.management.faculty.entity.FacultyProfile profile = facultyProfileOpt.get();
+						if (profile.getDepartment() != null && !profile.getDepartment().isEmpty()) {
+							posterDepartment = profile.getDepartment();
+						}
+						if (profile.getDesignation() != null && !profile.getDesignation().isEmpty()) {
+							posterBatchYear = profile.getDesignation();
+						} else {
+							posterBatchYear = "Faculty";
+						}
+					}
+				} else if ("ADMIN".equals(roleName)) {
+					posterDepartment = "Administration";
+					posterBatchYear = "Staff";
+				}
+			}
+		}
+
+		return new JobDto(job.getUser().getId(), job.getUser().getName(), job.getUser().getEmail(), job.getCompanyName(), job.getJobTitle(),
 				job.getLocation(), job.getSalary(), job.getJobDescription(), job.getSkillsRequired(),
-				job.getExperienceRequired(), job.getJoiningType(), job.getJobType(), job.getLastDateToApply());
+				job.getExperienceRequired(), job.getJoiningType(), job.getJobType(), job.getLastDateToApply(),
+				job.getCompanyLink(), job.getCompanyEmail(), posterDepartment, posterBatchYear);
 	}
 
 	/**
@@ -86,6 +129,8 @@ public class JobService {
 		existingJob.setJoiningType(jobDto.getJoiningType());
 		existingJob.setJobType(jobDto.getJobType());
 		existingJob.setLastDateToApply(jobDto.getLastDateToApply());
+		existingJob.setCompanyLink(jobDto.getCompanyLink());
+		existingJob.setCompanyEmail(jobDto.getCompanyEmail());
 
 		jobRepository.save(existingJob);
 		return "Job post updated successfully with ID: " + id;

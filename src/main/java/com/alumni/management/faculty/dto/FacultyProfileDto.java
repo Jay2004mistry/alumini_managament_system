@@ -1,14 +1,5 @@
 package com.alumni.management.faculty.dto;
 
-import com.alumni.management.user.entity.User;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-
 public class FacultyProfileDto {
 
 	private String department;
@@ -24,9 +15,20 @@ public class FacultyProfileDto {
 	private String bio;
 	private String linkedInUrl;
 
+	// New fields to match the frontend UI
+	private String teachingExperience;
+	private String industryExperience;
+	private String publicationsCount;
+	private String certifications;
+	private String achievements;
+	private String skills;
+	private String studentsGuided;
+	private String projectsSupervised;
+
 	public FacultyProfileDto(String department, String designation, String qualification, String specialization,
 			Integer experienceYears, String email, String contactNumber, String researchInterests, String bio,
-			String linkedInUrl) {
+			String linkedInUrl, String teachingExperience, String industryExperience, String publicationsCount,
+			String certifications, String achievements, String skills, String studentsGuided, String projectsSupervised) {
 		super();
 		this.department = department;
 		this.designation = designation;
@@ -38,6 +40,14 @@ public class FacultyProfileDto {
 		this.researchInterests = researchInterests;
 		this.bio = bio;
 		this.linkedInUrl = linkedInUrl;
+		this.teachingExperience = teachingExperience;
+		this.industryExperience = industryExperience;
+		this.publicationsCount = publicationsCount;
+		this.certifications = certifications;
+		this.achievements = achievements;
+		this.skills = skills;
+		this.studentsGuided = studentsGuided;
+		this.projectsSupervised = projectsSupervised;
 	}
 
 	public FacultyProfileDto() {
@@ -58,6 +68,78 @@ public class FacultyProfileDto {
 
 	public String getSpecialization() {
 		return specialization;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public void setQualification(String qualification) {
+		this.qualification = qualification;
+	}
+
+	public void setSpecialization(String specialization) {
+		this.specialization = specialization;
+	}
+
+	public void setExperienceYears(Integer experienceYears) {
+		this.experienceYears = experienceYears;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
+	}
+
+	public void setResearchInterests(String researchInterests) {
+		this.researchInterests = researchInterests;
+	}
+
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
+
+	public void setLinkedInUrl(String linkedInUrl) {
+		this.linkedInUrl = linkedInUrl;
+	}
+
+	public void setTeachingExperience(String teachingExperience) {
+		this.teachingExperience = teachingExperience;
+	}
+
+	public void setIndustryExperience(String industryExperience) {
+		this.industryExperience = industryExperience;
+	}
+
+	public void setPublicationsCount(String publicationsCount) {
+		this.publicationsCount = publicationsCount;
+	}
+
+	public void setCertifications(String certifications) {
+		this.certifications = certifications;
+	}
+
+	public void setAchievements(String achievements) {
+		this.achievements = achievements;
+	}
+
+	public void setSkills(String skills) {
+		this.skills = skills;
+	}
+
+	public void setStudentsGuided(String studentsGuided) {
+		this.studentsGuided = studentsGuided;
+	}
+
+	public void setProjectsSupervised(String projectsSupervised) {
+		this.projectsSupervised = projectsSupervised;
 	}
 
 	public Integer getExperienceYears() {
@@ -82,6 +164,38 @@ public class FacultyProfileDto {
 
 	public String getLinkedInUrl() {
 		return linkedInUrl;
+	}
+
+	public String getTeachingExperience() {
+		return teachingExperience;
+	}
+
+	public String getIndustryExperience() {
+		return industryExperience;
+	}
+
+	public String getPublicationsCount() {
+		return publicationsCount;
+	}
+
+	public String getCertifications() {
+		return certifications;
+	}
+
+	public String getAchievements() {
+		return achievements;
+	}
+
+	public String getSkills() {
+		return skills;
+	}
+
+	public String getStudentsGuided() {
+		return studentsGuided;
+	}
+
+	public String getProjectsSupervised() {
+		return projectsSupervised;
 	}
 
 }

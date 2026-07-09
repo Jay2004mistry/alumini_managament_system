@@ -4,16 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.alumni.management.alumni.dto.AlumniProfileDto;
-import com.alumni.management.alumni.entity.AlumniProfile;
-import com.alumni.management.alumni.repository.AlumniProfileRepository;
 import com.alumni.management.exception.ResourceNotFoundException;
 import com.alumni.management.faculty.dto.FacultyProfileDto;
 import com.alumni.management.faculty.entity.FacultyProfile;
 import com.alumni.management.faculty.repository.FacultyRepository;
 import com.alumni.management.user.entity.User;
 import com.alumni.management.user.repository.UserRepository;
-import com.alumni.management.user.service.UserService;
 
 @Service
 public class FacultyService {
@@ -24,12 +20,9 @@ public class FacultyService {
 	@Autowired
 	UserRepository userRepository;
 
-//	JWT get user after getting token instade if taking userId by using email and token
-
 	private User getCurrentUser() {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-
 	}
 
 	public String createFacultyProfile(FacultyProfile facultyProfile) {
@@ -51,6 +44,17 @@ public class FacultyService {
 		profile.setResearchInterests(facultyProfile.getResearchInterests());
 		profile.setBio(facultyProfile.getBio());
 		profile.setLinkedInUrl(facultyProfile.getLinkedInUrl());
+
+		// New fields mapping
+		profile.setTeachingExperience(facultyProfile.getTeachingExperience());
+		profile.setIndustryExperience(facultyProfile.getIndustryExperience());
+		profile.setPublicationsCount(facultyProfile.getPublicationsCount());
+		profile.setCertifications(facultyProfile.getCertifications());
+		profile.setAchievements(facultyProfile.getAchievements());
+		profile.setSkills(facultyProfile.getSkills());
+		profile.setStudentsGuided(facultyProfile.getStudentsGuided());
+		profile.setProjectsSupervised(facultyProfile.getProjectsSupervised());
+
 		facultyRepository.save(profile);
 		return "Profile add successfully";
 	}
@@ -58,18 +62,35 @@ public class FacultyService {
 	public FacultyProfileDto getFacultyProfile() {
 		User user = getCurrentUser();
 		FacultyProfile profile = facultyRepository.findByUserId(user.getId())
-				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+				.orElseThrow(() -> new ResourceNotFoundException("Faculty profile not found"));
 
-		return new FacultyProfileDto(profile.getDepartment(), profile.getDesignation(), profile.getQualification(),
-				profile.getSpecialization(), profile.getExperienceYears(), profile.getEmail(),
-				profile.getContactNumber(), profile.getResearchInterests(), profile.getBio(), profile.getLinkedInUrl());
+		return new FacultyProfileDto(
+				profile.getDepartment(), 
+				profile.getDesignation(), 
+				profile.getQualification(),
+				profile.getSpecialization(), 
+				profile.getExperienceYears(), 
+				profile.getEmail(),
+				profile.getContactNumber(), 
+				profile.getResearchInterests(), 
+				profile.getBio(), 
+				profile.getLinkedInUrl(),
+				profile.getTeachingExperience(),
+				profile.getIndustryExperience(),
+				profile.getPublicationsCount(),
+				profile.getCertifications(),
+				profile.getAchievements(),
+				profile.getSkills(),
+				profile.getStudentsGuided(),
+				profile.getProjectsSupervised()
+		);
 	}
 
 	public String updateFacultyProfile(FacultyProfile facultyProfile) {
 		User user = getCurrentUser();
 
 		FacultyProfile profile = facultyRepository.findByUserId(user.getId())
-				.orElseThrow(() -> new ResourceNotFoundException("Faculty not found"));
+				.orElse(new FacultyProfile());
 		profile.setDepartment(facultyProfile.getDepartment());
 		profile.setDesignation(facultyProfile.getDesignation());
 		profile.setQualification(facultyProfile.getQualification());
@@ -82,6 +103,17 @@ public class FacultyService {
 		profile.setResearchInterests(facultyProfile.getResearchInterests());
 		profile.setBio(facultyProfile.getBio());
 		profile.setLinkedInUrl(facultyProfile.getLinkedInUrl());
+
+		// New fields mapping
+		profile.setTeachingExperience(facultyProfile.getTeachingExperience());
+		profile.setIndustryExperience(facultyProfile.getIndustryExperience());
+		profile.setPublicationsCount(facultyProfile.getPublicationsCount());
+		profile.setCertifications(facultyProfile.getCertifications());
+		profile.setAchievements(facultyProfile.getAchievements());
+		profile.setSkills(facultyProfile.getSkills());
+		profile.setStudentsGuided(facultyProfile.getStudentsGuided());
+		profile.setProjectsSupervised(facultyProfile.getProjectsSupervised());
+
 		facultyRepository.save(profile);
 		return "Profile Update successfully";
 	}

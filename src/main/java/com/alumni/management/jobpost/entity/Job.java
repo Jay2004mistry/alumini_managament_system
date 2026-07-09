@@ -38,6 +38,8 @@ public class Job {
 	private String jobType;
 
 	private LocalDate lastDateToApply;
+	private String companyLink;
+	private String companyEmail;
 
 //    FetchType.lazy improve performance
 //    foreign key will give to user_id column here
@@ -47,7 +49,7 @@ public class Job {
 
 	public Job(Long id, String companyName, String jobTitle, String location, String salary, String jobDescription,
 			String skillsRequired, String experienceRequired, String joiningType, String jobType,
-			LocalDate lastDateToApply, User user) {
+			LocalDate lastDateToApply, String companyLink, String companyEmail, User user) {
 		super();
 		this.id = id;
 		this.companyName = companyName;
@@ -60,6 +62,8 @@ public class Job {
 		this.joiningType = joiningType;
 		this.jobType = jobType;
 		this.lastDateToApply = lastDateToApply;
+		this.companyLink = companyLink;
+		this.companyEmail = companyEmail;
 		this.user = user;
 	}
 
@@ -161,6 +165,22 @@ public class Job {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getCompanyLink() {
+		return companyLink;
+	}
+
+	public void setCompanyLink(String companyLink) {
+		this.companyLink = companyLink;
+	}
+
+	public String getCompanyEmail() {
+		return companyEmail;
+	}
+
+	public void setCompanyEmail(String companyEmail) {
+		this.companyEmail = companyEmail;
 	}
 
 }

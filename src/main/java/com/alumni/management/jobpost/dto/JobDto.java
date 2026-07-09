@@ -6,6 +6,7 @@ public class JobDto {
 	
 	private long userId;
 	private String userName;
+	private String userEmail;
 	private String companyName;
 	private String jobTitle;
 	private String location;
@@ -18,13 +19,18 @@ public class JobDto {
 	private String jobType;
 
 	private LocalDate lastDateToApply;
+	private String companyLink;
+	private String companyEmail;
+	private String posterDepartment;
+	private String posterBatchYear;
 
-	public JobDto(long userId, String userName, String companyName, String jobTitle, String location, String salary,
+	public JobDto(long userId, String userName, String userEmail, String companyName, String jobTitle, String location, String salary,
 			String jobDescription, String skillsRequired, String experienceRequired, String joiningType, String jobType,
-			LocalDate lastDateToApply) {
+			LocalDate lastDateToApply, String companyLink, String companyEmail, String posterDepartment, String posterBatchYear) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
+		this.userEmail = userEmail;
 		this.companyName = companyName;
 		this.jobTitle = jobTitle;
 		this.location = location;
@@ -35,6 +41,10 @@ public class JobDto {
 		this.joiningType = joiningType;
 		this.jobType = jobType;
 		this.lastDateToApply = lastDateToApply;
+		this.companyLink = companyLink;
+		this.companyEmail = companyEmail;
+		this.posterDepartment = posterDepartment;
+		this.posterBatchYear = posterBatchYear;
 	}
 
 	public JobDto() {
@@ -55,6 +65,14 @@ public class JobDto {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 
 	public String getCompanyName() {
@@ -136,9 +154,37 @@ public class JobDto {
 	public void setLastDateToApply(LocalDate lastDateToApply) {
 		this.lastDateToApply = lastDateToApply;
 	}
-	
-	
-	
-	
+
+	public String getCompanyLink() {
+		return companyLink;
+	}
+
+	public void setCompanyLink(String companyLink) {
+		this.companyLink = companyLink;
+	}
+
+	public String getCompanyEmail() {
+		return companyEmail;
+	}
+
+	public void setCompanyEmail(String companyEmail) {
+		this.companyEmail = companyEmail;
+	}
+
+	public String getPosterDepartment() {
+		return posterDepartment;
+	}
+
+	public void setPosterDepartment(String posterDepartment) {
+		this.posterDepartment = posterDepartment;
+	}
+
+	public String getPosterBatchYear() {
+		return posterBatchYear;
+	}
+
+	public void setPosterBatchYear(String posterBatchYear) {
+		this.posterBatchYear = posterBatchYear;
+	}
 
 }
