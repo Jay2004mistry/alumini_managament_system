@@ -1,5 +1,8 @@
 package com.alumni.management.faculty.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -59,12 +62,10 @@ public class FacultyService {
 		return "Profile add successfully";
 	}
 
-	public FacultyProfileDto getFacultyProfile() {
-		User user = getCurrentUser();
-		FacultyProfile profile = facultyRepository.findByUserId(user.getId())
-				.orElseThrow(() -> new ResourceNotFoundException("Faculty profile not found"));
-
+	private FacultyProfileDto convertToDto(FacultyProfile profile) {
 		return new FacultyProfileDto(
+				profile.getUser().getId(),
+				profile.getUser().getName(),
 				profile.getDepartment(), 
 				profile.getDesignation(), 
 				profile.getQualification(),
@@ -86,11 +87,30 @@ public class FacultyService {
 		);
 	}
 
+	public FacultyProfileDto getFacultyProfile() {
+		User user = getCurrentUser();
+		FacultyProfile profile = facultyRepository.findByUserId(user.getId())
+				.orElseThrow(() -> new ResourceNotFoundException("Faculty profile not found"));
+
+		return convertToDto(profile);
+	}
+
+	public List<FacultyProfileDto> getAllFacultyProfiles() {
+		return facultyRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+	}
+
+	public FacultyProfileDto getFacultyProfileByUserId(Long userId) {
+		FacultyProfile profile = facultyRepository.findByUserId(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("Faculty profile not found for user: " + userId));
+		return convertToDto(profile);
+	}
+
 	public String updateFacultyProfile(FacultyProfile facultyProfile) {
 		User user = getCurrentUser();
 
 		FacultyProfile profile = facultyRepository.findByUserId(user.getId())
 				.orElse(new FacultyProfile());
+		profile.setUser(user);
 		profile.setDepartment(facultyProfile.getDepartment());
 		profile.setDesignation(facultyProfile.getDesignation());
 		profile.setQualification(facultyProfile.getQualification());

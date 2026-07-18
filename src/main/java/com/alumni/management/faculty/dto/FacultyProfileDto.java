@@ -2,6 +2,8 @@ package com.alumni.management.faculty.dto;
 
 public class FacultyProfileDto {
 
+	private Long userId;
+	private String userName;
 	private String department;
 	private String designation;
 	private String qualification;
@@ -25,11 +27,13 @@ public class FacultyProfileDto {
 	private String studentsGuided;
 	private String projectsSupervised;
 
-	public FacultyProfileDto(String department, String designation, String qualification, String specialization,
+	public FacultyProfileDto(Long userId, String userName, String department, String designation, String qualification, String specialization,
 			Integer experienceYears, String email, String contactNumber, String researchInterests, String bio,
 			String linkedInUrl, String teachingExperience, String industryExperience, String publicationsCount,
 			String certifications, String achievements, String skills, String studentsGuided, String projectsSupervised) {
 		super();
+		this.userId = userId;
+		this.userName = userName;
 		this.department = department;
 		this.designation = designation;
 		this.qualification = qualification;
@@ -52,6 +56,22 @@ public class FacultyProfileDto {
 
 	public FacultyProfileDto() {
 		super();
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getDepartment() {

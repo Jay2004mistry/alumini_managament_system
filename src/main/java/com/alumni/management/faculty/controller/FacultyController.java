@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import com.alumni.management.alumni.dto.AlumniProfileDto;
 import com.alumni.management.faculty.dto.FacultyProfileDto;
 import com.alumni.management.faculty.entity.FacultyProfile;
@@ -47,6 +49,16 @@ public class FacultyController {
 	public String deleteFacultyProfile() {
 		return facultyService.deleteFacultyProfile();
 		
+	}
+
+	@GetMapping()
+	public List<FacultyProfileDto> getAllFacultyProfiles() {
+		return facultyService.getAllFacultyProfiles();
+	}
+
+	@GetMapping("/user/{userId}")
+	public FacultyProfileDto getFacultyProfileByUserId(@PathVariable Long userId) {
+		return facultyService.getFacultyProfileByUserId(userId);
 	}
 
 }

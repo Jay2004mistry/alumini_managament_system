@@ -33,6 +33,8 @@ public class Event {
 	private User createdBy;
 //	Add this new 1 if code not work remove it
 	private String imageUrl;
+	private String targetDepartment;
+	private String note;
 
 	public Event(Long id, String title, String description, String location, LocalDate eventDate, String status,
 			LocalDateTime createdAt, User createdBy, String imageUrl) {
@@ -123,6 +125,22 @@ public class Event {
 
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+
+	public String getTargetDepartment() {
+		return targetDepartment;
+	}
+
+	public void setTargetDepartment(String targetDepartment) {
+		this.targetDepartment = targetDepartment;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 }

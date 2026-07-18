@@ -36,7 +36,7 @@ public class EventService {
 //	//	Add this new 1 if code not work remove it untill 		return "Event submitted for approval";
 
 	public String createEvent(String title, String description, String location, LocalDate eventDate,
-			MultipartFile image) {
+			String targetDepartment, String note, MultipartFile image) {
 		User user = getCurrentUser();
 
 		Event event = new Event();
@@ -44,7 +44,9 @@ public class EventService {
 		event.setDescription(description);
 		event.setLocation(location);
 		event.setEventDate(eventDate);
-		event.setStatus("PENDING");
+		event.setTargetDepartment(targetDepartment);
+		event.setNote(note);
+		event.setStatus("APPROVED");
 		event.setCreatedAt(LocalDateTime.now());
 		event.setCreatedBy(user);
 
@@ -60,10 +62,10 @@ public class EventService {
 
 // Generate unique filename
 				String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-				String filePath = uploadDir + fileName;
+				File destFile = new File(directory.getAbsolutePath() + File.separator + fileName);
 
 // Save file
-				image.transferTo(new File(filePath));
+				image.transferTo(destFile);
 
 // Set image URL (you can serve this statically)
 				event.setImageUrl("/uploads/events/" + fileName);

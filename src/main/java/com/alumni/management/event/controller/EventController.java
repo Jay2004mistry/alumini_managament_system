@@ -28,20 +28,21 @@ public class EventController {
 
 //	Add this new 1 if code not work remove it
 	@PostMapping(consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PreAuthorize("hasAnyRole('ALUMNI', 'FACULTY', 'ADMIN')")
 	public String createEvent(@RequestParam("title") String title, @RequestParam("description") String description,
 			@RequestParam("location") String location,
 			@RequestParam("eventDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate eventDate,
+			@RequestParam("targetDepartment") String targetDepartment,
+			@RequestParam(value = "note", required = false) String note,
 			@RequestParam(value = "image", required = false) MultipartFile image) {
 
-		return eventService.createEvent(title, description, location, eventDate, image);
+		return eventService.createEvent(title, description, location, eventDate, targetDepartment, note, image);
 	}
 
-	@PostMapping()
-//
-//	public String createEvent(@RequestBody Event event) {
-//
-//		return eventService.createEvent(event);
-//	}
+	//	@PostMapping()
+	//	public String createEvent(@RequestBody Event event) {
+	//		return eventService.createEvent(event);
+	//	}
 
 //get approved event(publiclly)
 	@GetMapping

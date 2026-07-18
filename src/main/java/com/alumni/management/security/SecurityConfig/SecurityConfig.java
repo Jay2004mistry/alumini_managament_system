@@ -34,14 +34,18 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                     // Public endpoints
+                    .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+                    .requestMatchers("/chat/**").permitAll()
                     .requestMatchers("/api/users/login").permitAll()
                     .requestMatchers("/api/users").permitAll()
-                    .requestMatchers("/api/events").permitAll()
+                    .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/events").permitAll()
+                    .requestMatchers("/uploads/**").permitAll()
 
                     // Admin endpoints
                     .requestMatchers("/api/events/admin/**").hasRole("ADMIN")
 
                     // Authenticated endpoints
+                    .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/events").authenticated()
                     .requestMatchers("/api/events/my").authenticated()
 
                     // Everything else
