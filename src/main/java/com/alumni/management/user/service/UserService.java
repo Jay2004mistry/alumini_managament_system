@@ -119,4 +119,64 @@ public class UserService {
 	        .collect(Collectors.toList());
 	}
 
+	private static class OtpData {
+		private final String code;
+		private final long expiryTime;
+
+		public OtpData(String code, long expiryTime) {
+			this.code = code;
+			this.expiryTime = expiryTime;
+		}
+
+		public String getCode() {
+			return code;
+		}
+
+		public boolean isExpired() {
+			return System.currentTimeMillis() > expiryTime;
+		}
+	}
+
+	private final java.util.concurrent.ConcurrentHashMap<String, OtpData> otpStorage = new java.util.concurrent.ConcurrentHashMap<>();
+
+	public java.util.Map<String, String> processForgotPassword(com.alumni.management.user.dto.ForgotPasswordRequestDto request) {
+		User user = userRepository.findByEmail(request.getEmail())
+				.orElseThrow(() -> new ResourceNotFoundException("User with email " + request.getEmail() + " not found"));
+
+		String code = String.format("%06d", new java.util.Random().nextInt(900000) + 100000);
+		long expiry = System.currentTimeMillis() + (15 * 60 * 1000); // 15 minutes
+		otpStorage.put(user.getEmail().toLowerCase().trim(), new OtpData(code, expiry));
+
+		System.out.println("==================================================");
+		System.out.println("🔐 FORGOT PASSWORD OTP FOR [" + user.getEmail() + "]: " + code);
+		System.out.println("==================================================");
+
+		java.util.Map<String, String> response = new java.util.HashMap<>();
+		response.put("message", "OTP sent successfully");
+		response.put("email", user.getEmail());
+		response.put("otp", code);
+		return response;
+	}
+
+	public java.util.Map<String, String> resetPassword(com.alumni.management.user.dto.ResetPasswordRequestDto request) {
+		String email = request.getEmail() != null ? request.getEmail().toLowerCase().trim() : "";
+		User user = userRepository.findByEmail(email)
+				.orElseThrow(() -> new ResourceNotFoundException("User with email " + email + " not found"));
+
+		OtpData otpData = otpStorage.get(email);
+		if (otpData == null || otpData.isExpired() || !otpData.getCode().equals(request.getOtp() != null ? request.getOtp().trim() : "")) {
+			throw new RuntimeException("Invalid or expired OTP");
+		}
+
+		user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+		userRepository.save(user);
+
+		otpStorage.remove(email);
+
+		java.util.Map<String, String> response = new java.util.HashMap<>();
+		response.put("message", "Password reset successfully");
+		return response;
+	}
+
 }
+

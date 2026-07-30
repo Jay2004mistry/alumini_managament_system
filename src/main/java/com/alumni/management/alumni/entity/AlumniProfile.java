@@ -205,6 +205,16 @@ public class AlumniProfile {
 	public void setCurrentCity(String currentCity) {
 		this.currentCity = currentCity;
 	}
+
+	private String profilePictureUrl;
+
+	public String getProfilePictureUrl() {
+		return profilePictureUrl;
+	}
+
+	public void setProfilePictureUrl(String profilePictureUrl) {
+		this.profilePictureUrl = profilePictureUrl;
+	}
     
     
     

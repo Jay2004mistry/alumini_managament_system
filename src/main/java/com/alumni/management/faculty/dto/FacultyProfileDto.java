@@ -218,4 +218,14 @@ public class FacultyProfileDto {
 		return projectsSupervised;
 	}
 
+	private String profilePictureUrl;
+
+	public String getProfilePictureUrl() {
+		return profilePictureUrl;
+	}
+
+	public void setProfilePictureUrl(String profilePictureUrl) {
+		this.profilePictureUrl = profilePictureUrl;
+	}
+
 }

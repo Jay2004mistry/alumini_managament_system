@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alumni.management.user.dto.ForgotPasswordRequestDto;
 import com.alumni.management.user.dto.LoginRequestDto;
 import com.alumni.management.user.dto.LoginResponseDto;
+import com.alumni.management.user.dto.ResetPasswordRequestDto;
 import com.alumni.management.user.dto.UserResponseDto;
 import com.alumni.management.user.entity.User;
 import com.alumni.management.user.service.UserService;
@@ -27,10 +29,6 @@ public class UserController {
 
 	@PostMapping
 	public User createUser(@RequestBody User user) {
-
-	
-//		Send the user data to the service layer and then 
-//		service layer will save that data by checking condition
 		return userService.createUser(user);
 	}
 
@@ -53,21 +51,49 @@ public class UserController {
 	@PutMapping("/{id}")
 	public User updateUserData(@PathVariable Long id, @RequestBody User user) {
 		return userService.updateUserData(id, user);
-
 	}
-	
 
 	@PostMapping("/login")
 	public LoginResponseDto login(@RequestBody LoginRequestDto request) {
 	    return userService.login(request);
 	}
+
 	@GetMapping("/search/name/{name}")
 	public List<UserResponseDto> searchUsersByName(@PathVariable String name) {
 	    return userService.searchUsersByName(name);
 	}
-	
-	
 
+	@PostMapping("/profile-image")
+	public java.util.Map<String, String> uploadProfileImage(@org.springframework.web.bind.annotation.RequestParam("image") org.springframework.web.multipart.MultipartFile image) {
+		if (image == null || image.isEmpty()) {
+			throw new RuntimeException("Image is empty");
+		}
+		try {
+			String uploadDir = "uploads/profiles/";
+			java.io.File directory = new java.io.File(uploadDir);
+			if (!directory.exists()) {
+				directory.mkdirs();
+			}
+			String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+			java.io.File destFile = new java.io.File(directory.getAbsolutePath() + java.io.File.separator + fileName);
+			image.transferTo(destFile);
+			
+			java.util.Map<String, String> res = new java.util.HashMap<>();
+			res.put("url", "/uploads/profiles/" + fileName);
+			return res;
+		} catch (java.io.IOException e) {
+			throw new RuntimeException("Failed to save profile image", e);
+		}
+	}
 
+	@PostMapping("/forgot-password")
+	public java.util.Map<String, String> forgotPassword(@RequestBody ForgotPasswordRequestDto request) {
+		return userService.processForgotPassword(request);
+	}
+
+	@PostMapping("/reset-password")
+	public java.util.Map<String, String> resetPassword(@RequestBody ResetPasswordRequestDto request) {
+		return userService.resetPassword(request);
+	}
 
 }

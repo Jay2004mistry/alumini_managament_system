@@ -15,6 +15,8 @@ import com.alumni.management.user.entity.User;
 import com.alumni.management.user.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
+import com.alumni.management.notification.entity.Notification;
+import com.alumni.management.notification.repository.NotificationRepository;
 
 @Service
 public class JobService {
@@ -23,6 +25,8 @@ public class JobService {
 	JobRepository jobRepository;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	NotificationRepository notificationRepository;
 	@Autowired
 	com.alumni.management.alumni.repository.AlumniProfileRepository alumniProfileRepository;
 	@Autowired
@@ -97,6 +101,18 @@ public class JobService {
 //Set the user to the job post
 		job.setUser(user);
 		jobRepository.save(job);
+
+		try {
+			Notification notification = new Notification();
+			notification.setTitle("New Job Posted");
+			notification.setMessage(job.getJobTitle() + " role at " + job.getCompanyName() + " posted by " + user.getName());
+			notification.setTimestamp(java.time.LocalDateTime.now());
+			notification.setRead(false);
+			notificationRepository.save(notification);
+		} catch (Exception e) {
+			// Silently fail notification so it doesn't block main flow
+		}
+
 		return "Job post created successfully by " + user.getName();
 	}
 

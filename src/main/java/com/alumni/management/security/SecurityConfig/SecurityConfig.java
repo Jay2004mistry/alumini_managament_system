@@ -1,5 +1,7 @@
 package com.alumni.management.security.SecurityConfig;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,19 +9,17 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.alumni.management.security.JwtFilter.JwtFilter;
 
 // Disables CSRF
 // Allows login & registration without token
-//Requires authentication for everything else
+// Requires authentication for everything else
 // Makes app stateless (no server sessions)
 @Configuration
-
-
-//When you add this annotation to a @Configuration class, it enables Spring Security's
-//AOP (Aspect-Oriented Programming) security interceptors. This means you can dictate
-//exactly who is allowed to execute a specific method based on their roles, authorities
 @EnableMethodSecurity
 public class SecurityConfig {
 
@@ -30,13 +30,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            .cors(org.springframework.security.config.Customizer.withDefaults())
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                     // Public endpoints
                     .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers("/chat/**").permitAll()
                     .requestMatchers("/api/users/login").permitAll()
+                    .requestMatchers("/api/users/forgot-password").permitAll()
+                    .requestMatchers("/api/users/reset-password").permitAll()
                     .requestMatchers("/api/users").permitAll()
                     .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/events").permitAll()
                     .requestMatchers("/uploads/**").permitAll()
@@ -59,4 +61,18 @@ public class SecurityConfig {
 
         return http.build();
     }
-}
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(List.of("*"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+}

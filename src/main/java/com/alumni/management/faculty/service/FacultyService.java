@@ -57,13 +57,14 @@ public class FacultyService {
 		profile.setSkills(facultyProfile.getSkills());
 		profile.setStudentsGuided(facultyProfile.getStudentsGuided());
 		profile.setProjectsSupervised(facultyProfile.getProjectsSupervised());
+		profile.setProfilePictureUrl(facultyProfile.getProfilePictureUrl());
 
 		facultyRepository.save(profile);
 		return "Profile add successfully";
 	}
 
 	private FacultyProfileDto convertToDto(FacultyProfile profile) {
-		return new FacultyProfileDto(
+		FacultyProfileDto dto = new FacultyProfileDto(
 				profile.getUser().getId(),
 				profile.getUser().getName(),
 				profile.getDepartment(), 
@@ -85,6 +86,8 @@ public class FacultyService {
 				profile.getStudentsGuided(),
 				profile.getProjectsSupervised()
 		);
+		dto.setProfilePictureUrl(profile.getProfilePictureUrl());
+		return dto;
 	}
 
 	public FacultyProfileDto getFacultyProfile() {
@@ -133,6 +136,7 @@ public class FacultyService {
 		profile.setSkills(facultyProfile.getSkills());
 		profile.setStudentsGuided(facultyProfile.getStudentsGuided());
 		profile.setProjectsSupervised(facultyProfile.getProjectsSupervised());
+		profile.setProfilePictureUrl(facultyProfile.getProfilePictureUrl());
 
 		facultyRepository.save(profile);
 		return "Profile Update successfully";

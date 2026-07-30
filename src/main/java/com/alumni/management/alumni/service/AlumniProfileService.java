@@ -31,13 +31,15 @@ public class AlumniProfileService {
 
 //	Help to not write this everytime just call it using map(this::converToDto)
 	private AlumniProfileDto convertToDto(AlumniProfile alumniProfile) {
-		return new AlumniProfileDto(alumniProfile.getUser().getId(),
-
+		AlumniProfileDto dto = new AlumniProfileDto(alumniProfile.getUser().getId(),
 				alumniProfile.getUser().getName(), alumniProfile.getBatchYear(), alumniProfile.getDegree(),
 				alumniProfile.getDepartment(), alumniProfile.getDesignation(), alumniProfile.getCompanyName(),
 				alumniProfile.getIndustry(), alumniProfile.getSkills(), alumniProfile.getWorkExperience(),
 				alumniProfile.getLinkedInUrl(), alumniProfile.getGithubUrl(), alumniProfile.getContactNumber(),
 				alumniProfile.getCurrentCity());
+		dto.setProfilePictureUrl(alumniProfile.getProfilePictureUrl());
+		dto.setEmail(alumniProfile.getUser().getEmail());
+		return dto;
 	}
 
 	public String createProfile(AlumniProfile profile) {
@@ -64,6 +66,7 @@ public class AlumniProfileService {
 		alumniProfile.setGithubUrl(profile.getGithubUrl());
 		alumniProfile.setContactNumber(profile.getContactNumber());
 		alumniProfile.setCurrentCity(profile.getCurrentCity());
+		alumniProfile.setProfilePictureUrl(profile.getProfilePictureUrl());
 
 		profileRepository.save(alumniProfile);
 
@@ -98,6 +101,7 @@ public class AlumniProfileService {
 		alumniProfile.setGithubUrl(profile.getGithubUrl());
 		alumniProfile.setContactNumber(profile.getContactNumber());
 		alumniProfile.setCurrentCity(profile.getCurrentCity());
+		alumniProfile.setProfilePictureUrl(profile.getProfilePictureUrl());
 
 		profileRepository.save(alumniProfile);
 

@@ -17,6 +17,9 @@ import com.alumni.management.exception.ResourceNotFoundException;
 import com.alumni.management.user.entity.User;
 import com.alumni.management.user.repository.UserRepository;
 
+import com.alumni.management.notification.entity.Notification;
+import com.alumni.management.notification.repository.NotificationRepository;
+
 @Service
 public class EventService {
 
@@ -25,6 +28,9 @@ public class EventService {
 
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	NotificationRepository notificationRepository;
 
 //	jwt authentication for token genration
 
@@ -76,6 +82,18 @@ public class EventService {
 		}
 
 		eventRepository.save(event);
+
+		try {
+			Notification notification = new Notification();
+			notification.setTitle("New Event Posted");
+			notification.setMessage(event.getTitle() + " has been announced by " + user.getName());
+			notification.setTimestamp(LocalDateTime.now());
+			notification.setRead(false);
+			notificationRepository.save(notification);
+		} catch (Exception e) {
+			// Silently fail notification so it doesn't block main flow
+		}
+
 		return "Event submitted for approval";
 	}
 
