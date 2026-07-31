@@ -153,4 +153,12 @@ public class EventService {
 		return "Event rejected successfully";
 	}
 
+	public String deleteEvent(Long eventId) {
+		Event event = eventRepository.findById(eventId)
+				.orElseThrow(() -> new ResourceNotFoundException("Event not found with id " + eventId));
+		eventRepository.delete(event);
+		return "Event deleted successfully";
+	}
+
 }
+

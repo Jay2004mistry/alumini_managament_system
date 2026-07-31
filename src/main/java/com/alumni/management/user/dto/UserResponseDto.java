@@ -1,10 +1,4 @@
-//This file use to display data to user and Userrepository file use to insert data
-//motive is to not display password to the user thats why we create this file
-//Thats why we only use getters not setters
-//DTOs cannot talk to the database.
 package com.alumni.management.user.dto;
-
-import com.alumni.management.user.entity.User;
 
 public class UserResponseDto {
 
@@ -12,13 +6,19 @@ public class UserResponseDto {
 	private String name;
 	private String email;
 	private String roleName;
+	private String department;
 
 	public UserResponseDto(Long id, String name, String email, String roleName) {
+		this(id, name, email, roleName, "MCA");
+	}
+
+	public UserResponseDto(Long id, String name, String email, String roleName, String department) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.roleName = roleName;
+		this.department = department != null && !department.isEmpty() ? department : "MCA";
 	}
 
 	public Long getId() {
@@ -36,15 +36,8 @@ public class UserResponseDto {
 	public String getRoleName() {
 		return roleName;
 	}
-	
-	private UserResponseDto convertToDto(User user) {
-	    return new UserResponseDto(
-	            user.getId(),
-	            user.getName(),
-	            user.getEmail(),
-	            user.getRole().getRoleName()
-	    );
+
+	public String getDepartment() {
+		return department;
 	}
-
-
 }

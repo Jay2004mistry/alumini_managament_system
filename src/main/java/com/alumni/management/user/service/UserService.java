@@ -28,6 +28,8 @@ public class UserService {
 	PasswordEncoder passwordEncoder;
 	@Autowired
 	JwtUtil jwtUtil;
+	@Autowired
+	com.alumni.management.email.service.EmailService emailService;
 
 	public User createUser(User user) {
 
@@ -151,10 +153,12 @@ public class UserService {
 		System.out.println("🔐 FORGOT PASSWORD OTP FOR [" + user.getEmail() + "]: " + code);
 		System.out.println("==================================================");
 
+		// Send real OTP Email
+		emailService.sendOtpEmail(user.getEmail(), code);
+
 		java.util.Map<String, String> response = new java.util.HashMap<>();
-		response.put("message", "OTP sent successfully");
+		response.put("message", "OTP sent successfully to your email");
 		response.put("email", user.getEmail());
-		response.put("otp", code);
 		return response;
 	}
 

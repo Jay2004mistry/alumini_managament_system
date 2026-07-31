@@ -78,7 +78,7 @@ public class JobService {
 			}
 		}
 
-		return new JobDto(job.getUser().getId(), job.getUser().getName(), job.getUser().getEmail(), job.getCompanyName(), job.getJobTitle(),
+		return new JobDto(job.getId(), job.getUser().getId(), job.getUser().getName(), job.getUser().getEmail(), job.getCompanyName(), job.getJobTitle(),
 				job.getLocation(), job.getSalary(), job.getJobDescription(), job.getSkillsRequired(),
 				job.getExperienceRequired(), job.getJoiningType(), job.getJobType(), job.getLastDateToApply(),
 				job.getCompanyLink(), job.getCompanyEmail(), posterDepartment, posterBatchYear);

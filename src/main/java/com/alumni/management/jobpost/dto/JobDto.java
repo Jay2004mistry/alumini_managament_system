@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class JobDto {
 	
+	private Long id;
 	private long userId;
 	private String userName;
 	private String userEmail;
@@ -24,10 +25,11 @@ public class JobDto {
 	private String posterDepartment;
 	private String posterBatchYear;
 
-	public JobDto(long userId, String userName, String userEmail, String companyName, String jobTitle, String location, String salary,
+	public JobDto(Long id, long userId, String userName, String userEmail, String companyName, String jobTitle, String location, String salary,
 			String jobDescription, String skillsRequired, String experienceRequired, String joiningType, String jobType,
 			LocalDate lastDateToApply, String companyLink, String companyEmail, String posterDepartment, String posterBatchYear) {
 		super();
+		this.id = id;
 		this.userId = userId;
 		this.userName = userName;
 		this.userEmail = userEmail;
@@ -45,6 +47,12 @@ public class JobDto {
 		this.companyEmail = companyEmail;
 		this.posterDepartment = posterDepartment;
 		this.posterBatchYear = posterBatchYear;
+	}
+
+	public JobDto(long userId, String userName, String userEmail, String companyName, String jobTitle, String location, String salary,
+			String jobDescription, String skillsRequired, String experienceRequired, String joiningType, String jobType,
+			LocalDate lastDateToApply, String companyLink, String companyEmail, String posterDepartment, String posterBatchYear) {
+		this(null, userId, userName, userEmail, companyName, jobTitle, location, salary, jobDescription, skillsRequired, experienceRequired, joiningType, jobType, lastDateToApply, companyLink, companyEmail, posterDepartment, posterBatchYear);
 	}
 
 	public JobDto() {
@@ -185,6 +193,14 @@ public class JobDto {
 
 	public void setPosterBatchYear(String posterBatchYear) {
 		this.posterBatchYear = posterBatchYear;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

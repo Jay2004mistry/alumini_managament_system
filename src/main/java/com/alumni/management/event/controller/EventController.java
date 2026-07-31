@@ -75,4 +75,11 @@ public class EventController {
 		return eventService.rejectEvent(eventId);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
+	@org.springframework.web.bind.annotation.DeleteMapping("/admin/delete/{eventId}")
+	public String deleteEvent(@PathVariable Long eventId) {
+		return eventService.deleteEvent(eventId);
+	}
+
 }
+

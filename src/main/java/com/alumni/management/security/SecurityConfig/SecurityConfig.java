@@ -45,6 +45,7 @@ public class SecurityConfig {
 
                     // Admin endpoints
                     .requestMatchers("/api/events/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
                     // Authenticated endpoints
                     .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/events").authenticated()
