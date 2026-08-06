@@ -2,24 +2,20 @@ package com.alumni.management.chat.repository;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import com.alumni.management.chat.entity.ChatMessage;
 
 @Repository
-public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
+public interface ChatMessageRepository extends MongoRepository<ChatMessage, String> {
 
-	@Query("SELECT m FROM ChatMessage m WHERE (m.sender = :user1 AND m.receiver = :user2) OR (m.sender = :user2 AND m.receiver = :user1) ORDER BY m.timestamp ASC")
-	List<ChatMessage> findChatHistory(@Param("user1") String user1, @Param("user2") String user2);
+	List<ChatMessage> findBySenderIgnoreCaseAndReceiverIgnoreCase(String sender, String receiver);
 
-	@Query("SELECT m FROM ChatMessage m WHERE m.sender = :email OR m.receiver = :email ORDER BY m.timestamp DESC")
-	List<ChatMessage> findConversations(@Param("email") String email);
+	List<ChatMessage> findBySenderIgnoreCaseOrReceiverIgnoreCase(String sender, String receiver);
 
-	List<ChatMessage> findByReceiverAndIsReadFalse(String receiver);
+	List<ChatMessage> findByReceiverIgnoreCaseAndIsReadFalse(String receiver);
 
-	List<ChatMessage> findBySenderAndReceiverAndIsReadFalse(String sender, String receiver);
+	List<ChatMessage> findBySenderIgnoreCaseAndReceiverIgnoreCaseAndIsReadFalse(String sender, String receiver);
 
 }

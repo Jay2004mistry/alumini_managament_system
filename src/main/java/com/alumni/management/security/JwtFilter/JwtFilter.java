@@ -39,36 +39,34 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-
             token = authHeader.substring(7);
-            email = jwtUtil.extractEmail(token);
+            try {
+                email = jwtUtil.extractEmail(token);
+            } catch (Exception e) {
+                // Ignore expired/malformed token exception safely
+            }
         }
 
-        if (email != null &&
-                SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            try {
+                var userDetails = userDetailsService.loadUserByUsername(email);
 
-            var userDetails =
-                    userDetailsService.loadUserByUsername(email);
+                if (jwtUtil.validateToken(token)) {
+                    var authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities());
 
-            if (jwtUtil.validateToken(token)) {
+                    authentication.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request));
 
-                var authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities());
-
-                authentication.setDetails(
-                        new WebAuthenticationDetailsSource()
-                                .buildDetails(request));
-
-                SecurityContextHolder
-                        .getContext()
-                        .setAuthentication(authentication);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (Exception e) {
+                // Ignore authentication context load failure
             }
         }
 
         chain.doFilter(request, response);
     }
 }
-

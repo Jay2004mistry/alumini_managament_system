@@ -15,10 +15,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.alumni.management.security.JwtFilter.JwtFilter;
 
-// Disables CSRF
-// Allows login & registration without token
-// Requires authentication for everything else
-// Makes app stateless (no server sessions)
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
@@ -35,12 +31,14 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                     // Public endpoints
                     .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
-                    .requestMatchers("/chat/**").permitAll()
+                    .requestMatchers("/chat/**", "/api/chat/**").permitAll()
+                    .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/chat/**").permitAll()
                     .requestMatchers("/api/users/login").permitAll()
                     .requestMatchers("/api/users/forgot-password").permitAll()
                     .requestMatchers("/api/users/reset-password").permitAll()
                     .requestMatchers("/api/users").permitAll()
                     .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/events").permitAll()
+                    .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/jobs").permitAll()
                     .requestMatchers("/uploads/**").permitAll()
 
                     // Admin endpoints
@@ -76,4 +74,4 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-}
+}
