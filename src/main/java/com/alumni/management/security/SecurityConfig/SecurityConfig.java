@@ -32,7 +32,6 @@ public class SecurityConfig {
                     // Public endpoints
                     .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers("/chat/**", "/api/chat/**").permitAll()
-                    .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/chat/**").permitAll()
                     .requestMatchers("/api/users/login").permitAll()
                     .requestMatchers("/api/users/forgot-password").permitAll()
                     .requestMatchers("/api/users/reset-password").permitAll()
@@ -48,6 +47,9 @@ public class SecurityConfig {
                     // Authenticated endpoints
                     .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/events").authenticated()
                     .requestMatchers("/api/events/my").authenticated()
+                    .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/jobs").hasAnyRole("ALUMNI", "FACULTY", "ADMIN")
+                    .requestMatchers(org.springframework.http.HttpMethod.PUT, "/api/jobs/**").hasAnyRole("ALUMNI", "FACULTY", "ADMIN")
+                    .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/jobs/**").hasAnyRole("ALUMNI", "FACULTY", "ADMIN")
 
                     // Everything else
                     .anyRequest().authenticated()
